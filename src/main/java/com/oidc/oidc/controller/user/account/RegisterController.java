@@ -45,7 +45,7 @@ public class RegisterController {
         return registerService.getUserRegister(userName, userPassword, userConfirmPassword, userNickname, userEmail, userAvatar, userIntroduction);
     }
 
-    @GetMapping("/account/confirm")
+    @GetMapping("/user/account/confirm")
     public Map<String, String> confirmUserAccount(@RequestParam("token") String userConfirmationToken) {
         return registerService.confirmUserAccount(userConfirmationToken);
     }

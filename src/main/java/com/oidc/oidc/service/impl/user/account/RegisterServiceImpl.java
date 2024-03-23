@@ -26,7 +26,7 @@ public class RegisterServiceImpl implements RegisterService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> getUserRegister(String userName, String userPassword, String userConfirmPassword, String userEmail, String userNickname, String userAvatar, String userIntroduction) {
+    public Map<String, String> getUserRegister(String userName, String userPassword, String userConfirmPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction) {
         Map<String, String> map = new HashMap<>();
 
         if (isInvalidField(map, "用户名", userName, 100) ||
@@ -60,6 +60,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null);
         String newUserConfirmationToken = UUID.randomUUID().toString();
+        newUserConfirmationToken = id + newUserConfirmationToken + id * id % 23 + id * id % 17;
         newUser.setUserConfirmationToken(newUserConfirmationToken);
         newUser.setUserIsActive(false);
         userMapper.insert(newUser);
@@ -85,8 +86,6 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         user.setUserIsActive(true);
-        // 激活后清除令牌
-        user.setUserConfirmationToken(null);
         userMapper.updateById(user);
 
         map.put("error_message", "账户激活成功");
