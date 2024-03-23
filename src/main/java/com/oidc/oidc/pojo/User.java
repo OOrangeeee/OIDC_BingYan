@@ -11,7 +11,7 @@ public class User {
     private Integer id;
     private String user_name;
     private String user_password;
-    private String user_account;
+    private String user_nickname;
     private String user_email;
     private String user_avatar;
     private String user_introduction;

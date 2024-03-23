@@ -45,7 +45,7 @@
 
 用户表内容包括：
 
-![](md_images/用户表.png)
+![](md_images/用户表示意图.png)
 
 ### 实现基本的用户注册登录获取信息代码框架
 
@@ -68,4 +68,4 @@
 
 ### 引入Spring Security
 
-
+经过重写UserDetailsService和UserDetails，实现用户认证和授权。
