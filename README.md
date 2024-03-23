@@ -69,3 +69,5 @@
 ### 引入Spring Security
 
 经过重写UserDetailsService和UserDetails，实现用户认证和授权。
+
+配置Security实现加密密码。PasswordEncoder采用BCryptPasswordEncoder。
