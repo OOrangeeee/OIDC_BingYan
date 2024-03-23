@@ -21,19 +21,19 @@ public class RegisterController {
 
     @PostMapping("/user/account/register/")
     public Map<String, String> getUserRegister(@RequestParam Map<String, String> mapParams) {
-        String username = mapParams.get("username");
-        String password = mapParams.get("password");
-        String confirmPassword = mapParams.get("confirmPassword");
-        String nickname = mapParams.get("nickname");
-        String email = mapParams.get("email");
-        String avatar = mapParams.get("avatar");
-        String introduction = mapParams.get("introduction");
-        if (avatar == null) {
-            avatar = defaultAvatar;
+        String userName = mapParams.get("userName");
+        String userPassword = mapParams.get("userPassword");
+        String userConfirmPassword = mapParams.get("userConfirmPassword");
+        String userNickname = mapParams.get("userNickname");
+        String userEmail = mapParams.get("userEmail");
+        String userAvatar = mapParams.get("userAvatar");
+        String userIntroduction = mapParams.get("userIntroduction");
+        if (userAvatar == null) {
+            userAvatar = defaultAvatar;
         }
-        if (introduction == null) {
-            introduction = defaultIntroduction;
+        if (userIntroduction == null) {
+            userIntroduction = defaultIntroduction;
         }
-        return registerService.getUserRegister(username, password, confirmPassword, nickname, email, avatar, introduction);
+        return registerService.getUserRegister(userName, userPassword, userConfirmPassword, userNickname, userEmail, userAvatar, userIntroduction);
     }
 }

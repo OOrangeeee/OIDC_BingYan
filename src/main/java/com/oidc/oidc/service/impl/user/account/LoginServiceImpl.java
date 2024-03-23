@@ -27,9 +27,9 @@ public class LoginServiceImpl implements LoginService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public Map<String, String> getUserToken(String username, String password) {
+    public Map<String, String> getUserToken(String userName, String userPassword) {
         // 创建UsernamePasswordAuthenticationToken对象，它是Spring Security用于封装用户名和密码的令牌
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userName, userPassword);
 
         // 使用authenticationManager的authenticate方法进行认证
         // 如果认证失败，Spring Security会抛出异常，所以这里不需要额外处理认证失败的情况

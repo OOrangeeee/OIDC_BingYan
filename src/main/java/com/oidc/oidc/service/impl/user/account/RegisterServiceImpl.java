@@ -23,31 +23,38 @@ public class RegisterServiceImpl implements RegisterService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> getUserRegister(String username, String password, String confirmPassword, String email, String nickname, String avatar, String introduction) {
+    public Map<String, String> getUserRegister(String userName, String userPassword, String userConfirmPassword, String userEmail, String userNickname, String userAvatar, String userIntroduction) {
         Map<String, String> map = new HashMap<>();
 
-        if (isInvalidField(map, "用户名", username, 100) ||
-                isInvalidField(map, "密码", password, 1000) ||
-                isInvalidField(map, "确认密码", confirmPassword, 1000) ||
-                isInvalidField(map, "邮箱", email, 100) ||
-                isInvalidField(map, "昵称", nickname, 20) ||
-                isInvalidField(map, "头像地址", avatar, 1000) ||
-                isInvalidField(map, "简介", introduction, 1000) ||
-                !password.equals(confirmPassword)) {
+        if (isInvalidField(map, "用户名", userName, 100) ||
+                isInvalidField(map, "密码", userPassword, 1000) ||
+                isInvalidField(map, "确认密码", userConfirmPassword, 1000) ||
+                isInvalidField(map, "邮箱", userEmail, 100) ||
+                isInvalidField(map, "昵称", userNickname, 20) ||
+                isInvalidField(map, "头像地址", userAvatar, 1000) ||
+                isInvalidField(map, "简介", userIntroduction, 1000) ||
+                !userPassword.equals(userConfirmPassword)) {
             map.putIfAbsent("error_message", "两次输入的密码不一致");
             return map;
         }
 
-        username=username.trim();
+        userName = userName.trim();
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", username);
+        queryWrapper.eq("user_name", userName);
         if (!userMapper.selectList(queryWrapper).isEmpty()) {
             map.put("error_message", "该用户名已被注册");
             return map;
         }
 
-        User newUser = new User(null, username, passwordEncoder.encode(password), nickname, email, avatar, introduction);
+        Integer id = userMapper.findMaxId();
+        if (id == null) {
+            id = 0;
+        }
+
+        id++;
+
+        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction);
         userMapper.insert(newUser);
         map.put("error_message", "注册成功");
         return map;
