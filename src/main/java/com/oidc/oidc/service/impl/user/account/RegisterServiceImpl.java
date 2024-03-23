@@ -10,10 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 晋晨曦
@@ -43,11 +41,18 @@ public class RegisterServiceImpl implements RegisterService {
 
         userName = userName.trim();
 
+
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", userName);
-        if (!userMapper.selectList(queryWrapper).isEmpty()) {
-            map.put("error_message", "该用户名已被注册");
-            return map;
+
+        List<User> users = userMapper.selectList(queryWrapper);
+        for (User user : users) {
+            if (!user.isUserIsActive()) {
+                userMapper.deleteById(user.getId());
+            } else {
+                map.putIfAbsent("error_message", "用户名已存在");
+                return map;
+            }
         }
 
 
@@ -58,17 +63,20 @@ public class RegisterServiceImpl implements RegisterService {
 
         id++;
 
-        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null);
+        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null, null);
         String newUserConfirmationToken = UUID.randomUUID().toString();
         newUserConfirmationToken = id + newUserConfirmationToken + id * id % 23 + id * id % 17;
         newUser.setUserConfirmationToken(newUserConfirmationToken);
         newUser.setUserIsActive(false);
         userMapper.insert(newUser);
 
-        sendConfirmationEmail(newUser.getUserEmail(), newUserConfirmationToken);
+        Map<String, String> sendMap = sendConfirmationEmail(newUser);
 
-        map.put("error_message", "注册成功，请前往邮箱激活账号");
-
+        if ("发送频率太高，请等待五分钟".equals(sendMap.get("send_email_error_message"))) {
+            map.put("error_message", "发送频率太高，请等待五分钟");
+        } else {
+            map.put("error_message", "注册成功，请前往邮箱激活账号");
+        }
         return map;
 
     }
@@ -107,13 +115,37 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    private void sendConfirmationEmail(String userEmail, String confirmationToken) {
+    private Map<String, String> sendConfirmationEmail(User user) {
+        Map<String, String> map = new HashMap<>();
+        Date now = new Date();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_email", user.getUserEmail()).orderByDesc("user_last_email_sent_time");
+        List<User> users = userMapper.selectList(queryWrapper);
+
+        User userWithLatestEmailTime = users.isEmpty() ? null : users.get(0);
+
+        if (userWithLatestEmailTime != null && userWithLatestEmailTime.getUserLastEmailSentTime() != null) {
+            long diff = now.getTime() - userWithLatestEmailTime.getUserLastEmailSentTime().getTime();
+            long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+            if (diffMinutes < 5) {
+                map.put("send_email_error_message", "发送频率太高，请等待五分钟");
+                return map;
+            }
+        }
+        for (User userTmp : users) {
+            userTmp.setUserLastEmailSentTime(now);
+            userMapper.updateById(userTmp);
+        }
+
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(userEmail);
+        mailMessage.setTo(user.getUserEmail());
         mailMessage.setFrom("Jin0714ForProject@163.com");
         mailMessage.setSubject("看看我！你需要激活！");
-        mailMessage.setText("想激活你的账号？点击这里 : " + "http://localhost:714/user/account/confirm?token=" + confirmationToken + " !!!!!");
+        mailMessage.setText("想激活你的账号？点击这里 : " + "http://localhost:714/user/account/confirm?token=" + user.getUserConfirmationToken() + " !!!!!");
         javaMailSender.send(mailMessage);
+        map.put("send_email_error_message", "发送成功");
+        return map;
     }
 
 }

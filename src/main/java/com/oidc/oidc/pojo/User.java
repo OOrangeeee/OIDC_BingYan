@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.util.Date;
+
 /**
  * @author 晋晨曦
  */
@@ -29,12 +31,15 @@ public class User {
     @TableField("user_confirmation_token")
     private String userConfirmationToken;
 
+    @TableField("user_last_email_sent_time")
+    private Date userLastEmailSentTime;
+
     // 无参构造函数
     public User() {
     }
 
     // 有参构造函数
-    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken) {
+    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken,Date userLastEmailSentTime) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -44,9 +49,10 @@ public class User {
         this.userIntroduction = userIntroduction;
         this.userIsActive = userIsActive;
         this.userConfirmationToken = userConfirmationToken;
+        this.userLastEmailSentTime=userLastEmailSentTime;
     }
 
-    // getter和setter方法
+
     public Integer getId() {
         return id;
     }
@@ -117,6 +123,14 @@ public class User {
 
     public void setUserConfirmationToken(String userConfirmationToken) {
         this.userConfirmationToken = userConfirmationToken;
+    }
+
+    public Date getUserLastEmailSentTime() {
+        return userLastEmailSentTime;
+    }
+
+    public void setUserLastEmailSentTime(Date lastEmailSentTime) {
+        this.userLastEmailSentTime = lastEmailSentTime;
     }
 
     @Override
