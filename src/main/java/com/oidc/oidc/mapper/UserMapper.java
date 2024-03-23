@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.oidc.oidc.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 
+/**
+ * @author ChenXi Jin
+ */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     //调用mybatis-plus的接口实现mapper，避免使用sql语句出错。

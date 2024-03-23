@@ -14,11 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * @author ChenXi Jin
+ */
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter; // 注入JWT身份验证过滤器
+    // 注入JWT身份验证过滤器
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,11 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 自定义安全策略
         http.csrf().disable() // 禁用CSRF（跨站请求伪造）保护
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 设置session管理为无状态
+                // 设置session管理为无状态
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests() // 对请求进行授权配置
+                // 对请求进行授权配置
+                .authorizeRequests()
                 .antMatchers("/user/account/token/", "/user/account/register/").permitAll()
-                .antMatchers(HttpMethod.OPTIONS).permitAll() // 允许跨域预检请求
+                // 允许跨域预检请求
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -4,6 +4,8 @@
 
 **注：每天的记录都是按照实现顺序一步步来的，也就是说有可能出现对于一个任务的框架建立和具体实现在两个地方的情况。**
 
+在具体的代码里我新学会的东西都进行了详细的注释。
+
 ## 24.3.23任务梳理
 
 ### 新建文件夹（）
@@ -110,3 +112,29 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 认证信息设置：使用查询到的用户信息创建 UsernamePasswordAuthenticationToken，并将其设置到 SecurityContextHolder 中。这样，后续的处理流程就可以认为该请求已经通过身份验证。
 
 请求放行。
+
+### 实现登录
+
+采用AuthenticationManager处理认证。
+
+用UsernamePasswordAuthenticationToken封装用户名和密码。
+
+用AuthenticationManager.authenticate(authenticationToken)进行认证，认证失败自己报错。
+
+认证成功后，生成token，并返回给前端。
+
+### 实现注册
+
+注册需要7个值：
+
+1. 用户名
+2. 密码
+3. 确认密码
+4. 邮箱
+5. 昵称
+6. 头像
+7. 简介
+
+头像为头像简介，目前用的是手动上传的图床图像，后续会编写一个上传头像的接口。
+
+如果上传的7个值满足一定要求就注册然后插入就完了。

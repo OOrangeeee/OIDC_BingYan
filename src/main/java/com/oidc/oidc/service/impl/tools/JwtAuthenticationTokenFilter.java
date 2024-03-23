@@ -17,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author ChenXi Jin
+ */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
@@ -39,7 +42,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         // 从token中解析出用户id
         String userid;
         try {
-            Claims claims = JwtTool.parseJWT(token);
+            Claims claims = JwtTool.parseJwt(token);
             userid = claims.getSubject();
         } catch (Exception e) {
             throw new RuntimeException(e);

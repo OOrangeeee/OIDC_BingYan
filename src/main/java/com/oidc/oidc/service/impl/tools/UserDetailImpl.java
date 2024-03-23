@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+/**
+ * @author ChenXi Jin
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,13 +28,13 @@ public class UserDetailImpl implements UserDetails {
     @Override
     public String getPassword() {
         // 返回当前用户的密码
-        return user.getUser_password();
+        return user.getUserPassword();
     }
 
     @Override
     public String getUsername() {
         // 返回当前用户的用户名
-        return user.getUser_name();
+        return user.getUserName();
     }
 
     @Override

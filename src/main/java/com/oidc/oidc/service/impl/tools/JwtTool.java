@@ -11,21 +11,25 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * @author ChenXi Jin
+ */
 @Component
 public class JwtTool {
-    public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 14;//有效期14天
+    //有效期14天
+    public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 14;
 
     public static final String JWT_KEY = "SDFGjhdsfalshdfHFdsjkdssdgfhgdsdsffds121232131afasdfac";
 
     // 生成一个去除了连字符的UUID字符串
-    public static String getUUID() {
+    public static String getuuid() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     // 创建JWT
-    public static String createJWT(String subject) {
+    public static String createJwt(String subject) {
         // 调用getJwtBuilder方法获取JwtBuilder对象，并传入主题和UUID
-        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());
+        JwtBuilder builder = getJwtBuilder(subject, null, getuuid());
         return builder.compact();
     }
 
@@ -60,12 +64,13 @@ public class JwtTool {
     }
 
     // 解析JWT
-    public static Claims parseJWT(String jwt) throws Exception {
+    public static Claims parseJwt(String jwt) throws Exception {
         // 生成密钥
         SecretKey secretKey = generalKey();
         // 解析JWT，并返回Claims对象
+        // 使用密钥验证JWT
         return Jwts.parser()
-                .verifyWith(secretKey) // 使用密钥验证JWT
+                .verifyWith(secretKey)
                 .build()
                 .parseClaimsJws(jwt)
                 .getBody();
