@@ -1,21 +1,49 @@
 package com.oidc.oidc.config;
 
+import com.oidc.oidc.service.impl.tools.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// 启用Web安全
 @EnableWebSecurity
-// 声明这是一个配置类
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter; // 注入JWT身份验证过滤器
 
-    // 定义一个Bean，用于密码加密
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // 返回BCryptPasswordEncoder实例，用于加密密码
+        // 定义并返回一个密码编码器的实例，这里使用的是BCrypt加密算法
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        // 覆盖 authenticationManagerBean 方法以使用自定义的认证管理器
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // 自定义安全策略
+        http.csrf().disable() // 禁用CSRF（跨站请求伪造）保护
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 设置session管理为无状态
+                .and()
+                .authorizeRequests() // 对请求进行授权配置
+                .antMatchers("/user/account/token/", "/user/account/register/").permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll() // 允许跨域预检请求
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

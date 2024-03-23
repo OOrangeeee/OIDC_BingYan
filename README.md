@@ -71,3 +71,42 @@
 经过重写UserDetailsService和UserDetails，实现用户认证和授权。
 
 配置Security实现加密密码。PasswordEncoder采用BCryptPasswordEncoder。
+
+#### 实现JWT
+
+重写WebSecurityConfigurerAdapter类来自定义spring security配置。
+
+禁用CSRF保护，我们有token验证
+
+设置session为无状态，jwt不需要这个
+
+允许跨域预检请求
+
+开放几个公开接口来注册登录
+
+##### 实现JWT工具
+
+1. **生成密钥** (`generalKey` 方法)：
+   - 将一个预定义的字符串（JWT_KEY）通过 Base64 解码为字节数组。
+   - 使用这个字节数组创建一个 `SecretKey` 对象，用于 JWT 的签名和验证。
+2. **生成 JWT** (`createJWT` 方法)：
+   - 调用 `getUUID` 方法生成一个唯一标识符（UUID）。
+   - 调用 `getJwtBuilder` 方法创建一个 `JwtBuilder` 对象，设置 JWT 的主题（subject）、发行者（issuer）、签发时间（issuedAt）、过期时间（expiration）等。
+   - 使用生成的 `SecretKey` 对 JWT 进行签名。
+   - 调用 `compact` 方法将 JWT 对象压缩成一个字符串，这个字符串就是最终的 JWT。
+3. **解析 JWT** (`parseJWT` 方法)：
+   - 调用 `generalKey` 方法生成 `SecretKey` 对象。
+   - 使用 `Jwts.parser().verifyWith(secretKey)` 来验证 JWT 的签名是否有效。
+   - 解析 JWT 字符串，获取 JWT 的负载（payload），这里主要是 `Claims` 对象，其中包含了 JWT 的信息，如主题、签发者等。
+
+##### 实现JWT拦截器
+
+提取 JWT：从 HTTP 请求的 Authorization 头部提取 JWT。如果请求头不存在或不是以 "Bearer " 开头，则直接放行（即不进行 JWT 验证）。
+
+JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解析失败（比如，JWT 无效或过期），抛出异常。
+
+用户验证：通过 JWT 中的主题查询用户信息。如果查询不到用户，表示用户不存在或未登录，抛出异常。
+
+认证信息设置：使用查询到的用户信息创建 UsernamePasswordAuthenticationToken，并将其设置到 SecurityContextHolder 中。这样，后续的处理流程就可以认为该请求已经通过身份验证。
+
+请求放行。
