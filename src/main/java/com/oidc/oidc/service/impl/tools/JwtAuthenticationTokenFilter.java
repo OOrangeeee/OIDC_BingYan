@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {

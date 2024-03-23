@@ -4,7 +4,7 @@ import java.util.Map;
 
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 public interface LoginService {
     Map<String,String> getUserToken(String userName, String userPassword);

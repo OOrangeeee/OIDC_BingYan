@@ -1,7 +1,7 @@
 package com.oidc.oidc.controller.user.account;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 public class InfoController {
 }

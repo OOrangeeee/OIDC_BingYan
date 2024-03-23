@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 @RestController
 public class LoginController {

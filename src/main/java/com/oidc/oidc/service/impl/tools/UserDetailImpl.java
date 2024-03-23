@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 @Data
 @NoArgsConstructor

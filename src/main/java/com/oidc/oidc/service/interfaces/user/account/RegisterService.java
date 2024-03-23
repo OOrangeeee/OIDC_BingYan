@@ -4,8 +4,10 @@ import java.util.Map;
 
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 public interface RegisterService {
     Map<String, String> getUserRegister(String userName, String userPassword, String userConfirmPassword, String userEmail, String userNickname, String userAvatar, String userIntroduction);
+
+    Map<String, String> confirmUserAccount(String userConfirmationToken);
 }

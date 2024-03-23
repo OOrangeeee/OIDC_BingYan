@@ -5,15 +5,18 @@ import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.interfaces.user.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 @Service
 public class RegisterServiceImpl implements RegisterService {
@@ -47,6 +50,7 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
+
         Integer id = userMapper.findMaxId();
         if (id == null) {
             id = 0;
@@ -54,9 +58,38 @@ public class RegisterServiceImpl implements RegisterService {
 
         id++;
 
-        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction);
+        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null);
+        String newUserConfirmationToken = UUID.randomUUID().toString();
+        newUser.setUserConfirmationToken(newUserConfirmationToken);
+        newUser.setUserIsActive(false);
         userMapper.insert(newUser);
-        map.put("error_message", "注册成功");
+
+        sendConfirmationEmail(newUser.getUserEmail(), newUserConfirmationToken);
+
+        map.put("error_message", "注册成功，请前往邮箱激活账号");
+
+        return map;
+
+    }
+
+    @Override
+    public Map<String, String> confirmUserAccount(String userConfirmationToken) {
+        Map<String, String> map = new HashMap<>();
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_confirmation_token", userConfirmationToken);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            map.put("error_message", "无效的确认令牌");
+            return map;
+        }
+
+        user.setUserIsActive(true);
+        // 激活后清除令牌
+        user.setUserConfirmationToken(null);
+        userMapper.updateById(user);
+
+        map.put("error_message", "账户激活成功");
         return map;
     }
 
@@ -71,4 +104,17 @@ public class RegisterServiceImpl implements RegisterService {
         }
         return false;
     }
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    private void sendConfirmationEmail(String userEmail, String confirmationToken) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(userEmail);
+        mailMessage.setFrom("Jin0714ForProject@163.com");
+        mailMessage.setSubject("看看我！你需要激活！");
+        mailMessage.setText("想激活你的账号？点击这里 : " + "http://localhost:714/user/account/confirm?token=" + confirmationToken + " !!!!!");
+        javaMailSender.send(mailMessage);
+    }
+
 }

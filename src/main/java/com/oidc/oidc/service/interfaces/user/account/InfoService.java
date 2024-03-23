@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 public interface InfoService {
     Map<String, String> getUserInfo();

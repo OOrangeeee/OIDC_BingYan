@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {

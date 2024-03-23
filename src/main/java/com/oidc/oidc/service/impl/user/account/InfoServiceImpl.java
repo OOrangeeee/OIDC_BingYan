@@ -5,7 +5,7 @@ import com.oidc.oidc.service.interfaces.user.account.InfoService;
 import java.util.Map;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
 public class InfoServiceImpl implements InfoService {
 

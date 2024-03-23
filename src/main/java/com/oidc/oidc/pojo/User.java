@@ -3,16 +3,11 @@ package com.oidc.oidc.pojo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
- * @author ChenXi Jin
+ * @author 晋晨曦
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 @TableName("user")
 public class User {
     @TableField("id")
@@ -29,7 +24,160 @@ public class User {
     private String userAvatar;
     @TableField("user_introduction")
     private String userIntroduction;
-    //省略基础的get。。等等函数，省略基础的无参和有参构造函数，简化代码。
-    //后续实现所有功能后如果有时间我再回来自己写。
-    //TODO:实现自己的User get等函数。
+    @TableField("user_is_active")
+    private boolean userIsActive;
+    @TableField("user_confirmation_token")
+    private String userConfirmationToken;
+
+    // 无参构造函数
+    public User() {
+    }
+
+    // 有参构造函数
+    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken) {
+        this.id = id;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userNickname = userNickname;
+        this.userEmail = userEmail;
+        this.userAvatar = userAvatar;
+        this.userIntroduction = userIntroduction;
+        this.userIsActive = userIsActive;
+        this.userConfirmationToken = userConfirmationToken;
+    }
+
+    // getter和setter方法
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public String getUserIntroduction() {
+        return userIntroduction;
+    }
+
+    public void setUserIntroduction(String userIntroduction) {
+        this.userIntroduction = userIntroduction;
+    }
+
+    public boolean isUserIsActive() {
+        return userIsActive;
+    }
+
+    public void setUserIsActive(boolean userIsActive) {
+        this.userIsActive = userIsActive;
+    }
+
+    public String getUserConfirmationToken() {
+        return userConfirmationToken;
+    }
+
+    public void setUserConfirmationToken(String userConfirmationToken) {
+        this.userConfirmationToken = userConfirmationToken;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        if (userIsActive != user.userIsActive) {
+            return false;
+        }
+        if (!id.equals(user.id)) {
+            return false;
+        }
+        if (!userName.equals(user.userName)) {
+            return false;
+        }
+        if (!userPassword.equals(user.userPassword)) {
+            return false;
+        }
+        if (!userNickname.equals(user.userNickname)) {
+            return false;
+        }
+        if (!userEmail.equals(user.userEmail)) {
+            return false;
+        }
+        if (!userAvatar.equals(user.userAvatar)) {
+
+            return false;
+        }
+        if (!userIntroduction.equals(user.userIntroduction)) {
+            return false;
+        }
+        return userConfirmationToken.equals(user.userConfirmationToken);
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + userName.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", userNickname='" + userNickname + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userAvatar='" + userAvatar + '\'' +
+                ", userIntroduction='" + userIntroduction + '\'' +
+                ", userIsActive=" + userIsActive +
+                ", userConfirmationToken='" + userConfirmationToken + '\'' +
+                '}';
+    }
 }
