@@ -63,8 +63,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UserDetailImpl loginUser = new UserDetailImpl(user);
 
         // 设置认证信息
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUser, null, null);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, null);
 
         // 设置上下文
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

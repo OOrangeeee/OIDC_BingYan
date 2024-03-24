@@ -1,7 +1,6 @@
 package com.oidc.oidc.config;
 
 import com.oidc.oidc.service.impl.tools.JwtAuthenticationTokenFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

@@ -194,3 +194,7 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 ### 修改部分逻辑
 
 减少字段注入，确保依赖项不会被后续更改，使得类更加不可变，从而增加了代码的稳定性和可靠性。
+
+### 获取用户信息
+
+实现根据token获取用户信息的功能。token写在请求头里，被过滤器拦截后，使用JWT工具解析token，获取用户信息，储存在SecurityContextHolder中，后续在Service中使用SecurityContextHolder获取用户信息。
