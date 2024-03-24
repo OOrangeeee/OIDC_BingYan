@@ -1,5 +1,7 @@
 package com.oidc.oidc.service.impl.user.account;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.impl.tools.JwtTool;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
@@ -26,8 +28,23 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public Map<String, String> getUserToken(String userName, String userPassword) {
+        // 创建一个Map用于返回响应信息
+        Map<String, String> map = new HashMap<>();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_name",userName);
+        User checkUser=userMapper.selectOne(queryWrapper);
+
+        if(!checkUser.isUserIsActive())
+        {
+            map.put("error_message","用户未激活");
+            return map;
+        }
+
         // 创建UsernamePasswordAuthenticationToken对象，它是Spring Security用于封装用户名和密码的令牌
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userName, userPassword);
 
@@ -45,8 +62,7 @@ public class LoginServiceImpl implements LoginService {
         // 使用用户的id生成JWT令牌
         String jwt = JwtTool.createJwt(user.getId().toString());
 
-        // 创建一个Map用于返回响应信息
-        Map<String, String> map = new HashMap<>();
+
         // 添加登录成功的消息
         map.put("error_message", "登录成功");
         // 将生成的JWT令牌放入Map中返回
