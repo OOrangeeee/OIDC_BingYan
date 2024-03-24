@@ -134,7 +134,22 @@ public class InfoServiceImpl implements InfoService {
 
     @Override
     public Map<String, String> setUserAvatar(String userNewAvatar) {
-        return null;
+        Map<String, String> map = new HashMap<>();
+        if (userNewAvatar == null) {
+            map.put("error_message", "未导入默认头像");
+            return map;
+        }
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
+            User user = loginUser.getUser();
+            user.setUserAvatar(userNewAvatar);
+            userMapper.updateById(user);
+            map.put("error_message", "修改头像成功");
+        } catch (Exception e) {
+            map.put("error_message", "修改头像过程中出现错误");
+        }
+        return map;
     }
 
     @Override
