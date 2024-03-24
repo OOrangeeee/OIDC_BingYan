@@ -18,14 +18,11 @@ import java.util.Map;
  */
 @RestController
 public class RegisterController {
-    @Autowired
-    private RegisterService registerService;
+    private final RegisterService registerService;
 
-    @Autowired
-    private UserMapper userMapper;
-
-    private final String defaultAvatar = "https://img2.imgtp.com/2024/03/23/hUReTJss.jpg";
-    private final String defaultIntroduction = "这个人很懒，什么都没有留下";
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
+    }
 
     @PostMapping("/user/account/register/")
     public Map<String, String> getUserRegister(@RequestParam Map<String, String> mapParams) {
@@ -37,10 +34,10 @@ public class RegisterController {
         String userAvatar = mapParams.get("userAvatar");
         String userIntroduction = mapParams.get("userIntroduction");
         if (userAvatar == null) {
-            userAvatar = defaultAvatar;
+            userAvatar = "https://img2.imgtp.com/2024/03/23/hUReTJss.jpg";
         }
         if (userIntroduction == null) {
-            userIntroduction = defaultIntroduction;
+            userIntroduction = "这个人很懒，什么都没有留下";
         }
         return registerService.getUserRegister(userName, userPassword, userConfirmPassword, userNickname, userEmail, userAvatar, userIntroduction);
     }

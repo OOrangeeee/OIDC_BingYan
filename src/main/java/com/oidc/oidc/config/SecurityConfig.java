@@ -20,9 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
     // 注入JWT身份验证过滤器
-    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    public SecurityConfig(JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter) {
+        this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

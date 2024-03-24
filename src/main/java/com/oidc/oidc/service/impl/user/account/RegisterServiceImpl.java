@@ -18,10 +18,15 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class RegisterServiceImpl implements RegisterService {
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender javaMailSender;
+
+    public RegisterServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender) {
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.javaMailSender = javaMailSender;
+    }
 
     @Override
     public Map<String, String> getUserRegister(String userName, String userPassword, String userConfirmPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction) {
@@ -111,9 +116,6 @@ public class RegisterServiceImpl implements RegisterService {
         }
         return false;
     }
-
-    @Autowired
-    private JavaMailSender javaMailSender;
 
     private Map<String, String> sendConfirmationEmail(User user) {
         Map<String, String> map = new HashMap<>();

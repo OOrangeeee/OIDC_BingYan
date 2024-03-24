@@ -25,11 +25,14 @@ public class LoginServiceImpl implements LoginService {
 
     // 使用@Autowired注解自动注入AuthenticationManager实例
     // AuthenticationManager是Spring Security提供的用于处理认证的接口
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    public LoginServiceImpl(AuthenticationManager authenticationManager, UserMapper userMapper) {
+        this.authenticationManager = authenticationManager;
+        this.userMapper = userMapper;
+    }
 
     @Override
     public Map<String, String> getUserToken(String userName, String userPassword) {
