@@ -10,13 +10,12 @@ import java.util.Map;
 public interface InfoService {
     Map<String, String> getUserInfo();
 
-    Map<String,String> setUserPassword(int userId,String userPassword,String userConfirmPassword);
+    Map<String, String> setUserPassword(String userNowPassword,String userNewPassword, String userNewConfirmPassword);
 
-    Map<String,String> setUserNickname(int userId,String userNickname);
+    Map<String,String> setUserNickname(String userNewNickname);
 
-    Map<String,String> setUserEmail(int userId,String userEmail);
 
-    Map<String,String> setUserAvatar(int userId,String userAvatar);
+    Map<String,String> setUserAvatar(String userNewAvatar);
 
-    Map<String,String> setUserIntroduction(int userId,String userIntroduction);
+    Map<String,String> setUserIntroduction(String userNewIntroduction);
 }

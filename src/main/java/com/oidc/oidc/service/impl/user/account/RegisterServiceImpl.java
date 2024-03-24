@@ -44,7 +44,14 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
+        if(userPassword.length()< 6)
+        {
+            map.put("error_message", "密码长度不能小于6位");
+            return map;
+        }
+
         userName = userName.trim();
+        userNickname = userNickname.trim();
 
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();

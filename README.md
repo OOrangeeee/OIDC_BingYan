@@ -198,3 +198,7 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 ### 获取用户信息
 
 实现根据token获取用户信息的功能。token写在请求头里，被过滤器拦截后，使用JWT工具解析token，获取用户信息，储存在SecurityContextHolder中，后续在Service中使用SecurityContextHolder获取用户信息。
+
+### 实现用户信息修改
+
+实现根据token修改用户信息的功能。可以修改的有昵称，头像（还没实现），简介，密码。
