@@ -6,6 +6,6 @@ import java.util.Map;
 /**
  * @author 晋晨曦
  */
-public interface LoginService {
+public interface UserLoginService {
     Map<String,String> getUserToken(String userName, String userPassword);
 }

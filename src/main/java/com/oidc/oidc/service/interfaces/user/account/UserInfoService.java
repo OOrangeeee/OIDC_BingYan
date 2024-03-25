@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author 晋晨曦
  */
-public interface InfoService {
+public interface UserInfoService {
     Map<String, String> getUserInfo();
 
     Map<String, String> setUserPassword(String userNowPassword,String userNewPassword, String userNewConfirmPassword);

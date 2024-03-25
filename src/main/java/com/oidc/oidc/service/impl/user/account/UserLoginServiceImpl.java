@@ -5,8 +5,7 @@ import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.impl.tools.JwtTool;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
-import com.oidc.oidc.service.interfaces.user.account.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oidc.oidc.service.interfaces.user.account.UserLoginService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +20,7 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @Service
-public class LoginServiceImpl implements LoginService {
+public class UserLoginServiceImpl implements UserLoginService {
 
     // 使用@Autowired注解自动注入AuthenticationManager实例
     // AuthenticationManager是Spring Security提供的用于处理认证的接口
@@ -29,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
 
     private final UserMapper userMapper;
 
-    public LoginServiceImpl(AuthenticationManager authenticationManager, UserMapper userMapper) {
+    public UserLoginServiceImpl(AuthenticationManager authenticationManager, UserMapper userMapper) {
         this.authenticationManager = authenticationManager;
         this.userMapper = userMapper;
     }

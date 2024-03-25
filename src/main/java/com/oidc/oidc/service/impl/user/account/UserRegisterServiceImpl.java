@@ -3,8 +3,7 @@ package com.oidc.oidc.service.impl.user.account;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
-import com.oidc.oidc.service.interfaces.user.account.RegisterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oidc.oidc.service.interfaces.user.account.UserRegisterService;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +16,12 @@ import java.util.concurrent.TimeUnit;
  * @author 晋晨曦
  */
 @Service
-public class RegisterServiceImpl implements RegisterService {
+public class UserRegisterServiceImpl implements UserRegisterService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender javaMailSender;
 
-    public RegisterServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender) {
+    public UserRegisterServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder, JavaMailSender javaMailSender) {
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;

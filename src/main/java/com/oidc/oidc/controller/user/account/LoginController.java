@@ -1,7 +1,6 @@
 package com.oidc.oidc.controller.user.account;
 
-import com.oidc.oidc.service.interfaces.user.account.LoginService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oidc.oidc.service.interfaces.user.account.UserLoginService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,16 +12,16 @@ import java.util.Map;
  */
 @RestController
 public class LoginController {
-    private final LoginService loginService;
+    private final UserLoginService userLoginService;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginController(UserLoginService userLoginService) {
+        this.userLoginService = userLoginService;
     }
 
     @PostMapping("/user/account/token/")
     public Map<String, String> getUserToken(@RequestParam Map<String, String> mapParams){
         String userName=mapParams.get("userName");
         String userPassword=mapParams.get("userPassword");
-        return loginService.getUserToken(userName,userPassword);
+        return userLoginService.getUserToken(userName,userPassword);
     }
 }

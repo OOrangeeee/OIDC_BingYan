@@ -3,7 +3,7 @@ package com.oidc.oidc.service.impl.user.account;
 import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
-import com.oidc.oidc.service.interfaces.user.account.InfoService;
+import com.oidc.oidc.service.interfaces.user.account.UserInfoService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,13 +16,13 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @Service
-public class InfoServiceImpl implements InfoService {
+public class UserInfoServiceImpl implements UserInfoService {
 
     private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper;
 
-    public InfoServiceImpl(PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public UserInfoServiceImpl(PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
