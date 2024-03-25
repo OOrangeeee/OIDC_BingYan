@@ -13,13 +13,13 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @RestController
-public class InfoController {
+public class UserInfoController {
 
     final private UserInfoService userInfoService;
 
     final private ImageUploadService imageUploadService;
 
-    public InfoController(UserInfoService userInfoService, ImageUploadService imageUploadService) {
+    public UserInfoController(UserInfoService userInfoService, ImageUploadService imageUploadService) {
         this.userInfoService = userInfoService;
 
         this.imageUploadService = imageUploadService;

@@ -11,10 +11,10 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @RestController
-public class LoginController {
+public class UserLoginController {
     private final UserLoginService userLoginService;
 
-    public LoginController(UserLoginService userLoginService) {
+    public UserLoginController(UserLoginService userLoginService) {
         this.userLoginService = userLoginService;
     }
 

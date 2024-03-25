@@ -13,12 +13,12 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @RestController
-public class RegisterController {
+public class UserRegisterController {
     private final UserRegisterService userRegisterService;
 
     private final ImageUploadService imageUploadService;
 
-    public RegisterController(UserRegisterService userRegisterService, ImageUploadService imageUploadService) {
+    public UserRegisterController(UserRegisterService userRegisterService, ImageUploadService imageUploadService) {
         this.imageUploadService = imageUploadService;
         this.userRegisterService = userRegisterService;
     }

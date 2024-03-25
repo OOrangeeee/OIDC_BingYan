@@ -10,7 +10,7 @@ import java.util.Date;
  * @author 晋晨曦
  */
 
-@TableName("user")
+@TableName("user_info")
 public class User {
     @TableField("id")
     private Integer id;
@@ -39,7 +39,7 @@ public class User {
     }
 
     // 有参构造函数
-    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken,Date userLastEmailSentTime) {
+    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken, Date userLastEmailSentTime) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -49,7 +49,7 @@ public class User {
         this.userIntroduction = userIntroduction;
         this.userIsActive = userIsActive;
         this.userConfirmationToken = userConfirmationToken;
-        this.userLastEmailSentTime=userLastEmailSentTime;
+        this.userLastEmailSentTime = userLastEmailSentTime;
     }
 
 
