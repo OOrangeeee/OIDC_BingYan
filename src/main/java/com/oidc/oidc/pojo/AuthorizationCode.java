@@ -29,18 +29,22 @@ public class AuthorizationCode {
     @TableField("code_if_introduction")
     private Boolean codeIfIntroduction;
 
+    @TableField("code_user_id")
+    private int codeUserId;
+
     // 无参构造函数
     public AuthorizationCode() {
     }
 
     // 有参构造函数
-    public AuthorizationCode(int id, String codeWord, Boolean codeIfNickName, Boolean codeIfEmail, Boolean codeIfAvatar, Boolean codeIfIntroduction) {
+    public AuthorizationCode(int id, String codeWord, Boolean codeIfNickName, Boolean codeIfEmail, Boolean codeIfAvatar, Boolean codeIfIntroduction, int codeUserId) {
         this.id = id;
         this.codeWord = codeWord;
         this.codeIfNickName = codeIfNickName;
         this.codeIfEmail = codeIfEmail;
         this.codeIfAvatar = codeIfAvatar;
         this.codeIfIntroduction = codeIfIntroduction;
+        this.codeUserId = codeUserId;
     }
 
     public int getId() {
@@ -91,10 +95,18 @@ public class AuthorizationCode {
         this.codeIfIntroduction = codeIfIntroduction;
     }
 
+    public int getCodeUserId() {
+        return codeUserId;
+    }
+
+    public void setCodeUserId(int codeUserId) {
+        this.codeUserId = codeUserId;
+    }
+
     // hashCode 方法
     @Override
     public int hashCode() {
-        return Objects.hash(id, codeWord, codeIfNickName, codeIfEmail, codeIfAvatar, codeIfIntroduction);
+        return Objects.hash(id, codeWord, codeIfNickName, codeIfEmail, codeIfAvatar, codeIfIntroduction,codeUserId);
     }
 
     // equals 方法
@@ -112,7 +124,8 @@ public class AuthorizationCode {
                 Objects.equals(codeIfNickName, that.codeIfNickName) &&
                 Objects.equals(codeIfEmail, that.codeIfEmail) &&
                 Objects.equals(codeIfAvatar, that.codeIfAvatar) &&
-                Objects.equals(codeIfIntroduction, that.codeIfIntroduction);
+                Objects.equals(codeIfIntroduction, that.codeIfIntroduction) &&
+                Objects.equals(codeUserId, that.codeUserId);
     }
 
     // toString 方法
@@ -125,6 +138,7 @@ public class AuthorizationCode {
                 ", codeIfEmail=" + codeIfEmail +
                 ", codeIfAvatar=" + codeIfAvatar +
                 ", codeIfIntroduction=" + codeIfIntroduction +
+                ", codeUserId=" + codeUserId +
                 '}';
     }
 }

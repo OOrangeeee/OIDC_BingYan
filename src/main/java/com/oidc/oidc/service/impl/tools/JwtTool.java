@@ -9,6 +9,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -50,7 +51,7 @@ public class JwtTool {
         return Jwts.builder()
                 .id(uuid)
                 .subject(subject)
-                .issuer("sg")
+                .issuer("Orange")
                 .issuedAt(now)
                 .signWith(secretKey)
                 .expiration(expDate);
@@ -75,4 +76,20 @@ public class JwtTool {
                 .parseClaimsJws(jwt)
                 .getBody();
     }
+
+    // 在JwtTool类中添加以下方法
+
+    // 创建具有额外声明的JWT
+    public static String createJwtWithClaims(String subject, Map<String, Object> claims, long ttlMillis) {
+        JwtBuilder builder = Jwts.builder()
+                .setClaims(claims)
+                .setId(getuuid())
+                .setSubject(subject)
+                .setIssuer("Orange")
+                .setIssuedAt(new Date())
+                .signWith(generalKey())
+                .setExpiration(new Date(System.currentTimeMillis() + ttlMillis));
+        return builder.compact();
+    }
+
 }
