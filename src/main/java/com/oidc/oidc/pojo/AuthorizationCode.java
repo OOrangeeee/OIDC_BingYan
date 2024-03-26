@@ -14,24 +14,35 @@ public class AuthorizationCode {
     @TableField("id")
     private int id;
 
-    @TableField("code_value")
+    @TableField("code_word")
     private String codeWord;
 
-    @TableField("code_scope")
-    private String codeScope;
+    @TableField("code_if_nick_name")
+    private Boolean codeIfNickName;
+
+    @TableField("code_if_email")
+    private Boolean codeIfEmail;
+
+    @TableField("code_if_avatar")
+    private Boolean codeIfAvatar;
+
+    @TableField("code_if_introduction")
+    private Boolean codeIfIntroduction;
 
     // 无参构造函数
     public AuthorizationCode() {
     }
 
     // 有参构造函数
-    public AuthorizationCode(int id, String codeWord, String codeScope) {
+    public AuthorizationCode(int id, String codeWord, Boolean codeIfNickName, Boolean codeIfEmail, Boolean codeIfAvatar, Boolean codeIfIntroduction) {
         this.id = id;
         this.codeWord = codeWord;
-        this.codeScope = codeScope;
+        this.codeIfNickName = codeIfNickName;
+        this.codeIfEmail = codeIfEmail;
+        this.codeIfAvatar = codeIfAvatar;
+        this.codeIfIntroduction = codeIfIntroduction;
     }
 
-    // Getter 和 Setter 方法
     public int getId() {
         return id;
     }
@@ -48,18 +59,42 @@ public class AuthorizationCode {
         this.codeWord = codeWord;
     }
 
-    public String getCodeScope() {
-        return codeScope;
+    public Boolean isCodeIfNickName() {
+        return codeIfNickName;
     }
 
-    public void setCodeScope(String codeScope) {
-        this.codeScope = codeScope;
+    public void setCodeIfNickName(Boolean codeIfNickName) {
+        this.codeIfNickName = codeIfNickName;
+    }
+
+    public Boolean isCodeIfEmail() {
+        return codeIfEmail;
+    }
+
+    public void setCodeIfEmail(Boolean codeIfEmail) {
+        this.codeIfEmail = codeIfEmail;
+    }
+
+    public Boolean isCodeIfAvatar() {
+        return codeIfAvatar;
+    }
+
+    public void setCodeIfAvatar(Boolean codeIfAvatar) {
+        this.codeIfAvatar = codeIfAvatar;
+    }
+
+    public Boolean isCodeIfIntroduction() {
+        return codeIfIntroduction;
+    }
+
+    public void setCodeIfIntroduction(Boolean codeIfIntroduction) {
+        this.codeIfIntroduction = codeIfIntroduction;
     }
 
     // hashCode 方法
     @Override
     public int hashCode() {
-        return Objects.hash(id, codeWord, codeScope);
+        return Objects.hash(id, codeWord, codeIfNickName, codeIfEmail, codeIfAvatar, codeIfIntroduction);
     }
 
     // equals 方法
@@ -74,7 +109,10 @@ public class AuthorizationCode {
         AuthorizationCode that = (AuthorizationCode) obj;
         return id == that.id &&
                 Objects.equals(codeWord, that.codeWord) &&
-                Objects.equals(codeScope, that.codeScope);
+                Objects.equals(codeIfNickName, that.codeIfNickName) &&
+                Objects.equals(codeIfEmail, that.codeIfEmail) &&
+                Objects.equals(codeIfAvatar, that.codeIfAvatar) &&
+                Objects.equals(codeIfIntroduction, that.codeIfIntroduction);
     }
 
     // toString 方法
@@ -83,7 +121,10 @@ public class AuthorizationCode {
         return "AuthorizationCode{" +
                 "id=" + id +
                 ", codeWord='" + codeWord + '\'' +
-                ", codeScope='" + codeScope + '\'' +
+                ", codeIfNickName=" + codeIfNickName +
+                ", codeIfEmail=" + codeIfEmail +
+                ", codeIfAvatar=" + codeIfAvatar +
+                ", codeIfIntroduction=" + codeIfIntroduction +
                 '}';
     }
 }

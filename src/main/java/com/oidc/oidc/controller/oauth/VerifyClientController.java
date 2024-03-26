@@ -20,7 +20,7 @@ public class VerifyClientController {
         this.verifyClientService = verifyClientService;
     }
 
-    @PostMapping("/oauth/verify_client/")
+    @PostMapping("/oauth/verify_client")
     public ResponseEntity<?> verifyClient(@RequestParam Map<String, String> mapParams) {
         String clientName = mapParams.get("clientName");
         String clientPassword = mapParams.get("clientPassword");
