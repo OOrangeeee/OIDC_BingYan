@@ -3,6 +3,7 @@ package com.oidc.oidc.controller.user.account;
 import com.oidc.oidc.model.UserRegistrationModel;
 import com.oidc.oidc.service.interfaces.tools.ImageUploadService;
 import com.oidc.oidc.service.interfaces.user.account.UserRegisterService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,7 +25,7 @@ public class UserRegisterController {
     }
 
     @PostMapping("/user/account/register/")
-    public Map<String, String> getUserRegister(@ModelAttribute UserRegistrationModel userModel) throws IOException {
+    public ResponseEntity<?> getUserRegister(@ModelAttribute UserRegistrationModel userModel) throws IOException {
         String userName = userModel.getUserName();
         String userPassword = userModel.getUserPassword();
         String userConfirmPassword = userModel.getUserConfirmPassword();
@@ -45,7 +46,7 @@ public class UserRegisterController {
     }
 
     @GetMapping("/user/account/confirm")
-    public Map<String, String> confirmUserAccount(@RequestParam("token") String userConfirmationToken) {
+    public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String userConfirmationToken) {
         return userRegisterService.confirmUserAccount(userConfirmationToken);
     }
 

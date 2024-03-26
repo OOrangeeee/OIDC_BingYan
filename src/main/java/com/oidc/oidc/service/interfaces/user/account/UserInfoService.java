@@ -1,6 +1,6 @@
 package com.oidc.oidc.service.interfaces.user.account;
 
-import java.util.Map;
+import org.springframework.http.ResponseEntity;
 
 
 
@@ -8,14 +8,9 @@ import java.util.Map;
  * @author 晋晨曦
  */
 public interface UserInfoService {
-    Map<String, String> getUserInfo();
-
-    Map<String, String> setUserPassword(String userNowPassword,String userNewPassword, String userNewConfirmPassword);
-
-    Map<String,String> setUserNickname(String userNewNickname);
-
-
-    Map<String,String> setUserAvatar(String userNewAvatar);
-
-    Map<String,String> setUserIntroduction(String userNewIntroduction);
+    ResponseEntity<?> getUserInfo();
+    ResponseEntity<?> setUserPassword(String userNowPassword, String userNewPassword, String userNewConfirmPassword);
+    ResponseEntity<?> setUserNickname(String userNewNickname);
+    ResponseEntity<?> setUserAvatar(String userNewAvatar);
+    ResponseEntity<?> setUserIntroduction(String userNewIntroduction);
 }

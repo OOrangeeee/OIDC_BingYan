@@ -3,6 +3,7 @@ package com.oidc.oidc.controller.user.account;
 import com.oidc.oidc.model.ImageModel;
 import com.oidc.oidc.service.interfaces.tools.ImageUploadService;
 import com.oidc.oidc.service.interfaces.user.account.UserInfoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +27,12 @@ public class UserInfoController {
     }
 
     @GetMapping("/user/account/getInfo/")
-    public Map<String, String> getUserInfo() {
+    public ResponseEntity<?> getUserInfo() {
         return userInfoService.getUserInfo();
     }
 
     @PutMapping("/user/account/updateUserPassword/")
-    public Map<String, String> setUserPassword(@RequestParam Map<String, String> mapParams) {
+    public ResponseEntity<?> setUserPassword(@RequestParam Map<String, String> mapParams) {
         String userNowPassword = mapParams.get("userNowPassword");
         String userNewPassword = mapParams.get("userNewPassword");
         String userNewConfirmPassword = mapParams.get("userNewConfirmPassword");
@@ -39,13 +40,13 @@ public class UserInfoController {
     }
 
     @PutMapping("/user/account/updateUserNickname/")
-    public Map<String, String> setUserNickname(@RequestParam Map<String, String> mapParams) {
+    public ResponseEntity<?> setUserNickname(@RequestParam Map<String, String> mapParams) {
         String userNewNickname = mapParams.get("userNewNickname");
         return userInfoService.setUserNickname(userNewNickname);
     }
 
     @PutMapping("/user/account/updateUserIntroduction/")
-    public Map<String, String> setUserIntroduction(@RequestParam Map<String, String> mapParams) {
+    public ResponseEntity<?> setUserIntroduction(@RequestParam Map<String, String> mapParams) {
         String userNewIntroduction = mapParams.get("userNewIntroduction");
         if (userNewIntroduction == null) {
             userNewIntroduction = "这个人很懒，什么都没有留下";
@@ -54,7 +55,7 @@ public class UserInfoController {
     }
 
     @PutMapping("/user/account/updateUserAvatar/")
-    public Map<String, String> setUserAvatar(@ModelAttribute ImageModel imageModel) throws IOException {
+    public ResponseEntity<?> setUserAvatar(@ModelAttribute ImageModel imageModel) throws IOException {
         MultipartFile userNewAvatar = imageModel.getImageFile();
         String userNewAvatarUrl = "";
         if (userNewAvatar != null && !userNewAvatar.isEmpty()) {

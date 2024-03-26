@@ -2,8 +2,13 @@ package com.oidc.oidc.service.impl.user.account;
 
 import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.User;
+import com.oidc.oidc.service.impl.client.ClientRegisterServiceImpl;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
 import com.oidc.oidc.service.interfaces.user.account.UserInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,159 +27,155 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserMapper userMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserInfoServiceImpl.class);
+
     public UserInfoServiceImpl(PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
     }
 
     @Override
-    public Map<String, String> getUserInfo() {
-        Map<String, String> map = new HashMap<>();
+    public ResponseEntity<?> getUserInfo() {
+        Map<String, Object> responseBody = new HashMap<>();
         try {
             UsernamePasswordAuthenticationToken authenticationToken =
                     (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
-
-            map.put("error_message", "读取信息成功");
-            map.put("id", user.getId().toString());
-            map.put("userName", user.getUserName());
-            map.put("userNickname", user.getUserNickname());
-            map.put("userEmail", user.getUserEmail());
-            map.put("userAvatar", user.getUserAvatar());
-            map.put("userIntroduction", user.getUserIntroduction());
+            responseBody.put("error_message", "读取信息成功");
+            responseBody.put("id", user.getId());
+            responseBody.put("userName", user.getUserName());
+            responseBody.put("userNickname", user.getUserNickname());
+            responseBody.put("userEmail", user.getUserEmail());
+            responseBody.put("userAvatar", user.getUserAvatar());
+            responseBody.put("userIntroduction", user.getUserIntroduction());
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            map.clear();
-            map.put("error_message", "读取用户信息过程中出现错误");
+            responseBody.clear();
+            responseBody.put("error_message", "读取用户信息过程中出现错误");
+            logger.error("读取用户信息过程中出现错误", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        return map;
     }
 
 
     @Override
-    public Map<String, String> setUserPassword(String userNowPassword, String userNewPassword, String userNewConfirmPassword) {
-        Map<String, String> map = new HashMap<>();
-        if (userNowPassword == null) {
-            map.put("error_message", "旧密码不能为空");
-            return map;
-        }
-        if (userNewPassword == null) {
-            map.put("error_message", "新密码不能为空");
-            return map;
-        }
-        if (userNewConfirmPassword == null) {
-            map.put("error_message", "确认密码不能为空");
-            return map;
+    public ResponseEntity<?> setUserPassword(String userNowPassword, String userNewPassword, String userNewConfirmPassword) {
+        Map<String, Object> responseBody = new HashMap<>();
+        if (userNowPassword == null || userNewPassword == null || userNewConfirmPassword == null) {
+            responseBody.put("error_message", "密码不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
         }
         if (userNowPassword.equals(userNewPassword)) {
-            map.put("error_message", "新密码不能与旧密码相同");
-            return map;
+            responseBody.put("error_message", "新密码不能与旧密码相同");
+            return ResponseEntity.badRequest().body(responseBody);
         }
         if (!userNewPassword.equals(userNewConfirmPassword)) {
-            map.put("error_message", "两次输入的密码不一致");
-            return map;
+            responseBody.put("error_message", "两次输入的密码不一致");
+            return ResponseEntity.badRequest().body(responseBody);
         }
-        if (userNewPassword.length() > 1000) {
-            map.put("error_message", "密码长度不能超过1000");
-            return map;
+        if (userNewPassword.length() > 1000 || userNewPassword.length() < 6) {
+            responseBody.put("error_message", "密码长度应在6到1000字符之间");
+            return ResponseEntity.badRequest().body(responseBody);
         }
-        if (userNewPassword.length() < 6) {
-            map.put("error_message", "密码长度不能小于6");
-            return map;
-        }
-
         try {
             UsernamePasswordAuthenticationToken authenticationToken =
                     (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
-
             if (!passwordEncoder.matches(userNowPassword, user.getUserPassword())) {
-                map.put("error_message", "当前密码不正确");
-                return map;
+                responseBody.put("error_message", "当前密码不正确");
+                return ResponseEntity.badRequest().body(responseBody);
             }
-
             user.setUserPassword(passwordEncoder.encode(userNewPassword));
-
             userMapper.updateById(user);
-
-            map.put("error_message", "修改密码成功");
+            responseBody.put("success_message", "修改密码成功");
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            map.put("error_message", "修改密码过程中出现错误");
+            responseBody.put("error_message", "修改密码过程中出现错误");
+            logger.error("修改密码过程中出现错误", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-
-        return map;
     }
 
 
     @Override
-    public Map<String, String> setUserNickname(String userNewNickname) {
-        Map<String, String> map = new HashMap<>();
+    public ResponseEntity<?> setUserNickname(String userNewNickname) {
+        Map<String, Object> responseBody = new HashMap<>();
         if (userNewNickname == null || userNewNickname.trim().isEmpty()) {
-            map.put("error_message", "昵称不能为空");
-            return map;
+            responseBody.put("error_message", "昵称不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
         }
-        userNewNickname = userNewNickname.trim();
-        if (userNewNickname.length() > 20) {
-            map.put("error_message", "昵称长度不能超过20");
-            return map;
+        if (userNewNickname.trim().length() > 20) {
+            responseBody.put("error_message", "昵称长度不能超过20");
+            return ResponseEntity.badRequest().body(responseBody);
         }
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
-            user.setUserNickname(userNewNickname);
+            user.setUserNickname(userNewNickname.trim());
             userMapper.updateById(user);
-            map.put("error_message", "修改昵称成功");
+            responseBody.put("success_message", "修改昵称成功");
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            map.put("error_message", "修改昵称过程中出现错误");
+            responseBody.put("error_message", "修改昵称过程中出现错误");
+            logger.error("修改昵称过程中出现错误", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        return map;
     }
 
+
     @Override
-    public Map<String, String> setUserAvatar(String userNewAvatar) {
-        Map<String, String> map = new HashMap<>();
+    public ResponseEntity<?> setUserAvatar(String userNewAvatar) {
+        Map<String, Object> responseBody = new HashMap<>();
         if (userNewAvatar == null) {
-            map.put("error_message", "未导入默认头像");
-            return map;
+            responseBody.put("error_message", "头像不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
         }
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
             user.setUserAvatar(userNewAvatar);
             userMapper.updateById(user);
-            map.put("error_message", "修改头像成功");
+            responseBody.put("success_message", "修改头像成功");
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            map.put("error_message", "修改头像过程中出现错误");
+            responseBody.put("error_message", "修改头像过程中出现错误");
+            logger.error("修改头像过程中出现错误", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        return map;
     }
 
+
     @Override
-    public Map<String, String> setUserIntroduction(String userNewIntroduction) {
-        Map<String, String> map = new HashMap<>();
+    public ResponseEntity<?> setUserIntroduction(String userNewIntroduction) {
+        Map<String, Object> responseBody = new HashMap<>();
         if (userNewIntroduction == null) {
-            map.put("error_message", "未导入默认介绍");
-            return map;
+            responseBody.put("error_message", "介绍不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
         }
-
         if (userNewIntroduction.length() > 1000) {
-            map.put("error_message", "介绍长度不能超过1000");
-            return map;
+            responseBody.put("error_message", "介绍长度不能超过1000");
+            return ResponseEntity.badRequest().body(responseBody);
         }
-
         try {
-            UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
             user.setUserIntroduction(userNewIntroduction);
             userMapper.updateById(user);
-            map.put("error_message", "修改简介成功");
+            responseBody.put("success_message", "修改简介成功");
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            map.put("error_message", "修改简介过程中出现错误");
+            responseBody.put("error_message", "修改简介过程中出现错误");
+            logger.error("修改简介过程中出现错误", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
-        return map;
     }
+
 }
