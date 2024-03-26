@@ -37,7 +37,7 @@ public class TokenByCodeServiceImpl implements TokenByCodeService {
 
         Map<String, Object> accessClaims = new HashMap<>();
         accessClaims.put("id", authorizationCode.getCodeUserId());
-        accessClaims.put("ifNickName", authorizationCode.isCodeIfNickName());
+        accessClaims.put("ifNickname", authorizationCode.isCodeIfNickName());
         accessClaims.put("ifEmail", authorizationCode.isCodeIfEmail());
         accessClaims.put("ifAvatar", authorizationCode.isCodeIfAvatar());
         accessClaims.put("ifIntroduction", authorizationCode.isCodeIfIntroduction());
@@ -47,8 +47,8 @@ public class TokenByCodeServiceImpl implements TokenByCodeService {
         //有效期十四天，但是不用用户id了
         String refreshToken = JwtTool.createJwtWithClaims(authorizationCode.getCodeWord(), accessClaims, 1000 * 60 * 60 * 24 * 14);
 
-        responseBody.put("access_token", accessToken);
-        responseBody.put("refresh_token", refreshToken);
+        responseBody.put("accessToken", accessToken);
+        responseBody.put("refreshToken", refreshToken);
 
         authorizationCodeMapper.delete(queryWrapper);
 

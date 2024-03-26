@@ -41,12 +41,13 @@ public class AuthorizationCodeServiceImpl implements AuthorizationCodeService {
     @Override
     public ResponseEntity<?> createAuthorizationCode(Map<String, String> map) {
         Map<String, Object> responseBody = new HashMap<>();
-        Boolean ifNickName = "true".equals(map.get("userNickName"));
+        Boolean ifNickName = "true".equals(map.get("userNickname"));
         Boolean ifEmail = "true".equals(map.get("userEmail"));
         Boolean ifAvatar = "true".equals(map.get("userAvatar"));
         Boolean ifIntroduction = "true".equals(map.get("userIntroduction"));
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
+        String state = map.get("state");
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", userName);
@@ -74,6 +75,8 @@ public class AuthorizationCodeServiceImpl implements AuthorizationCodeService {
         AuthorizationCode authorizationCode = new AuthorizationCode(id, codeWord, ifNickName, ifEmail, ifAvatar, ifIntroduction, user.getId());
 
         authorizationCodeMapper.insert(authorizationCode);
+        responseBody.put("error_message", "授权码获取成功");
+        responseBody.put("state", state);
         responseBody.put("authorizationCode", authorizationCode.getCodeWord());
         return ResponseEntity.ok(responseBody);
 
