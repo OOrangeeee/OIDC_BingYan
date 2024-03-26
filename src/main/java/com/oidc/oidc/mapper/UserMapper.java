@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     // 自定义查询最大id的方法
-    @Select("SELECT MAX(id) FROM user")
+    @Select("SELECT MAX(id) FROM user_info")
     Integer findMaxId();
 
     //调用mybatis-plus的接口实现mapper，避免使用sql语句出错。

@@ -1,17 +1,12 @@
 package com.oidc.oidc.controller.user.account;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.model.UserRegistrationModel;
-import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.interfaces.tools.ImageUploadService;
-import com.oidc.oidc.service.interfaces.user.account.RegisterService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.oidc.oidc.service.interfaces.user.account.UserRegisterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -19,18 +14,18 @@ import java.util.Map;
  * @author 晋晨曦
  */
 @RestController
-public class RegisterController {
-    private final RegisterService registerService;
+public class UserRegisterController {
+    private final UserRegisterService userRegisterService;
 
     private final ImageUploadService imageUploadService;
 
-    public RegisterController(RegisterService registerService, ImageUploadService imageUploadService) {
+    public UserRegisterController(UserRegisterService userRegisterService, ImageUploadService imageUploadService) {
         this.imageUploadService = imageUploadService;
-        this.registerService = registerService;
+        this.userRegisterService = userRegisterService;
     }
 
     @PostMapping("/user/account/register/")
-    public Map<String, String> getUserRegister(@ModelAttribute UserRegistrationModel userModel) throws IOException {
+    public ResponseEntity<?> getUserRegister(@ModelAttribute UserRegistrationModel userModel) throws IOException {
         String userName = userModel.getUserName();
         String userPassword = userModel.getUserPassword();
         String userConfirmPassword = userModel.getUserConfirmPassword();
@@ -47,12 +42,12 @@ public class RegisterController {
         if (userIntroduction == null) {
             userIntroduction = "这个人很懒，什么都没有留下";
         }
-        return registerService.getUserRegister(userName, userPassword, userConfirmPassword, userNickname, userEmail, userAvatar, userIntroduction);
+        return userRegisterService.getUserRegister(userName, userPassword, userConfirmPassword, userNickname, userEmail, userAvatar, userIntroduction);
     }
 
     @GetMapping("/user/account/confirm")
-    public Map<String, String> confirmUserAccount(@RequestParam("token") String userConfirmationToken) {
-        return registerService.confirmUserAccount(userConfirmationToken);
+    public ResponseEntity<?> confirmUserAccount(@RequestParam("token") String userConfirmationToken) {
+        return userRegisterService.confirmUserAccount(userConfirmationToken);
     }
 
 }

@@ -48,7 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 对请求进行授权配置
                 .authorizeRequests()
-                .antMatchers("/user/account/token/", "/user/account/register/", "/user/account/confirm").permitAll()
+                .antMatchers("/user/account/token/",
+                        "/user/account/register/",
+                        "/user/account/confirm",
+                        "/client/register/",
+                        "/client/confirm",
+                        "/oauth/verify_client",
+                        "/oauth/getAuthorizationCode",
+                        "/oauth/getTokenByCode/",
+                        "/oauth/getInfoByToken/").permitAll()
                 // 允许跨域预检请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()

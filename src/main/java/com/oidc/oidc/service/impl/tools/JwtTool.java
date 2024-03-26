@@ -1,14 +1,13 @@
 package com.oidc.oidc.service.impl.tools;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -50,7 +49,7 @@ public class JwtTool {
         return Jwts.builder()
                 .id(uuid)
                 .subject(subject)
-                .issuer("sg")
+                .issuer("Orange")
                 .issuedAt(now)
                 .signWith(secretKey)
                 .expiration(expDate);
@@ -75,4 +74,45 @@ public class JwtTool {
                 .parseClaimsJws(jwt)
                 .getBody();
     }
+
+    // 在JwtTool类中添加以下方法
+
+    // 创建具有额外声明的JWT
+    public static String createJwtWithClaims(String subject, Map<String, Object> claims, long ttlMillis) {
+        JwtBuilder builder = Jwts.builder()
+                .setClaims(claims)
+                .setId(getuuid())
+                .setSubject(subject)
+                .setIssuer("Orange")
+                .setIssuedAt(new Date())
+                .signWith(generalKey())
+                .setExpiration(new Date(System.currentTimeMillis() + ttlMillis));
+        return builder.compact();
+    }
+
+    // 检验字符串是否符合JWT格式
+    public static boolean isJwtFormat(String token) {
+        if (token == null) {
+            return false;
+        }
+        String jwtPattern = "^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.?[A-Za-z0-9-_.+/=]*$";
+        return token.matches(jwtPattern);
+    }
+
+    // 判断JWT令牌是否过期
+    public static boolean isJwtExpired(String jwtToken) {
+        try {
+            SecretKey secretKey = generalKey();
+            Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseClaimsJws(jwtToken);
+            return false;
+        } catch (ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("JWT token validation failed.", e);
+        }
+    }
+
 }
