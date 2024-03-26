@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/account/register/",
                         "/user/account/confirm",
                         "/client/register/",
-                        "/client/confirm").permitAll()
+                        "/client/confirm",
+                        "/oauth/verify_client/").permitAll()
                 // 允许跨域预检请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
