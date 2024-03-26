@@ -28,4 +28,6 @@ public class VerifyClientController {
         return verifyClientService.verifyClient(clientName, clientPassword, clientRedirectionUrl);
     }
 
+
+
 }
