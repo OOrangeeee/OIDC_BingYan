@@ -61,21 +61,24 @@
    2. 登录成功返回token。
 3. 实现用户注册
    1. 需要提供用户名，密码，邮箱，昵称，头像，简介，头像和简介为非必需，如果用户不提供就用默认值替代。
-   2. 注册成功后，自动发送一封邮件到用户邮箱，要求用户点击邮件中的链接来激活账号。激活成功才算注册完成，可以正常登录，否则等同于完全没有注册，这符合事务的基本原则，要么全做，要么不做。
-   3. 由于我们允许一个邮箱注册多个账号，所以是每个邮箱**五分钟**只能获取一次邮件。
+   2. 头像是扔到图床上，储存链接。
+   3. 注册成功后，自动发送一封邮件到用户邮箱，要求用户点击邮件中的链接来激活账号。激活成功才算注册完成，可以正常登录，否则等同于完全没有注册，这符合事务的基本原则，要么全做，要么不做。
+   4. 由于我们允许一个邮箱注册多个账号，所以是每个邮箱**五分钟**只能获取一次邮件。
 4. 实现用户信息获取
    1. 获取用户信息，需要提供token。
    2. 获取信息不包括密码。
 5. 实现用户信息修改
    1. 支持修改的信息包括：昵称，头像，简介，密码。
    2. 登录的用户才能修改自己的信息。
+6. 注明
+   1. 用户登录是通过储存在上下文实现的，不能登录就只能前往登录和注册两个网址，通过储存在上下文里，只要在请求头里加入token，就能访问你能访问的地方。
 
 #### 阶段一代码框架
 
 代码框架是基于整个项目的代码框架设计的。
 
 1. POJO
-   1. User类：用于封装用户信息，包括ID、用户名、密码、邮箱、昵称、头像、简介、是否激活、激活令牌、最后一次邮件发送时间，用于与数据库表进行映射。
+   1. User类：用于封装用户信息，包括ID、用户名、密码、邮箱、昵称、头像、简介、是否激活、激活令牌、最后一次邮件发送时间，用于与数据库表进行映射。包括一堆的Setter，Getter，hashCode,toString,equals方法。
 2. Model
    1. UserRegistrationModel类：用于封装用户注册请求的数据，包括用户名、密码、重复密码、邮箱、昵称、头像、简介。
    2. ImageModel类：用于封装所有图片请求体的数据。
@@ -162,7 +165,62 @@
 
 #### 阶段二三代码架构
 
-TODO。。。。
+1. POJO
+   1. Client类：用于封装客户端信息，包括ID、密码、回调地址。包括一堆的Setter，Getter，hashCode,toString,equals方法。
+   2. AuthoriazationCOde类：用于封装授权码信息，包括授权码、是否授权昵称、是否授权邮件、是否授权头像、是否授权简介、用户ID。包括一堆的Setter，Getter，hashCode,toString,equals方法。
+      1. 这个类每次只能被用一次，然后被使用了就堂堂删掉。
+2. Model
+   1. 这两个阶段没有新增Model
+3. Mapper
+   1. ClientMapper类：定义了与数据库表对应的Mapper接口，用于实现与数据库表的交互操作。
+   2. AuthorizationCodeMapper类：定义了与数据库表对应的Mapper接口，用于实现与数据库表的交互操作。
+4. Service
+   1. interfaces
+      1. client
+         1. ClientRegisterService接口：用于处理客户端注册的逻辑。
+      2. oauth
+         1. AuthorizationCodeService接口：用于处理授权码的逻辑。包括生成处理储存返回授权码等等。
+         2. GetInfoByTokenService接口：用于处理根据token获取用户信息的逻辑。
+         3. GetTokenByTokenService接口：用于处理根据refreshToken获取accessToken的逻辑。
+         4. TokenByCodeService接口：用于处理根据授权码获取token的逻辑。
+         5. VerifyClientService接口：用于处理验证客户端是否可信的逻辑。
+      3. tools
+         1. CredentialService接口：用于处理生成随机高强度id和密码的逻辑。
+         2. UrlValidationService接口：用于处理验证URL是否有效的逻辑。
+   2. impl
+      1. client
+         1. ClientRegisterServiceImpl类：实现了ClientRegisterService接口。其中包括了客户端注册的逻辑。
+      2. oauth
+         1. AuthorizationCodeServiceImpl类：实现了AuthorizationCodeService接口。其中包括了授权码的逻辑。
+         2. GetInfoByTokenServiceImpl类：实现了GetInfoByTokenService接口。其中包括了根据token获取用户信息的逻辑。
+         3. GetTokenByTokenServiceImpl类：实现了GetTokenByTokenService接口。其中包括了根据refreshToken获取accessToken的逻辑。
+         4. TokenByCodeServiceImpl类：实现了TokenByCodeService接口。其中包括了根据授权码获取token的逻辑。
+         5. VerifyClientServiceImpl类：实现了VerifyClientService接口。其中包括了验证客户端是否可信的逻辑。
+      3. tools
+         1. CredentialServiceImpl类：实现了CredentialService接口。其中包括了生成随机高强度id和密码的逻辑。
+         2. UrlValidationServiceImpl类：实现了UrlValidationService接口。其中包括了验证URL是否有效的逻辑。
+5. Controller
+   1. client
+      1. ClientRegisterController类：用于处理客户端注册的请求。
+   2. oauth
+      1. AuthorizationCodeController类：用于处理授权码的请求。
+      2. GetInfoByTokenController类：用于处理根据token获取用户信息的请求。
+      3. TokenByCodeController类：用于处理根据授权码获取token的请求。
+      4. VerifyClientController类：用于处理验证客户端是否可信的请求。
+
+### 阶段四框架
+
+#### 阶段四详细功能说明
+
+在原先OAuth2.0的基础上加入了身份层，不是直接返回信息了，现在返回IDToken，信息都包含其中。
+
+#### 阶段四代码架构
+
+1. Service
+   1. interface
+      1. GetIDTokenByTokenService接口：用于处理返回idtoken的情况。
+   2. impl
+      1. GetIDTokenByTokenServiceImpl类：实现处理返回idtoken的逻辑。
 
 ## 24.3.23任务梳理
 
@@ -431,7 +489,7 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 
 **时间：今天花了10个小时（浪费了5个小时，1.5个小时学习理论，2个小时实现各种功能，1.5个小时重写日志和编写新日志）。**
 
-## 24.3.26总结
+## 24.3.26任务梳理
 
 ### 重构代码
 
@@ -461,7 +519,7 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 
 嗯，其实是因为我写了一整天，写到沁苑11.断电还在写，现在以及00.10，我的电脑马上就要没电了嗯。。。。。
 
-**今天的具体工作请看最上方的阶段二三详细功能介绍，基本上都是今天写的**
+**今天的具体工作请看最上方的阶段二三详细功能介绍，基本上都是今天写的。**
 
 ### 24.3.26总结
 
@@ -469,4 +527,30 @@ JWT 解析：使用 JwtTool.parseJWT(token) 方法尝试解析 JWT。如果解�
 
 这样一来阶段二就写完了，阶段三也是，不过后续**有时间的话**我可能还会再完善一些OAuth2.0服务的安全和完备性。
 
-**时间：今天花了8个小时（5个小时写代码，1个小时写WorkLog，2个小时摸鱼嗯，，，，）**
+**时间：今天花了8个小时（5个小时写代码，1个小时写WorkLog，2个小时摸鱼嗯，，，，）。**
+
+## 24.3.27任务梳理
+
+### 了解OIDC
+
+既然OIDC是建立再OAuth2.0的基础上的，我就去了解了一下OIDC到底做了什么。
+
+### 实现OIDC
+
+有了OAuth2.0 实现OIDC并不困难。
+
+### 加入自己思想
+
+既然是我自己手搓一个OAuth2.0这么好的机会，我就基于我的理解加入了一些我自己的想法，比如多次验证state，更多的用户选择等等。
+
+虽然这些实现起来更麻烦，但是还是很有意思的。
+
+### 编写openid-configuration.json
+
+编写这个文档，告诉别人怎么用。但是由于是我自己手搓的，而且加入了自己的思想和最标准的OAuth2.0以及OIDC有些许不同，但是我想着**实习的本质目的是看看我们的学习能力和现有基础以及工作热情**，所以我觉得这些差别也无关紧要。
+
+### 24.3.27总结
+
+嗯，今天比昨天还短，主要是今天确实没干什么，课程太紧张了，明天开始做后续阶段和拓展内容。
+
+**时间：今天花了一个半小时，半个小时了解OIDC，半个小时实现，半个小时写文档修bug。**
