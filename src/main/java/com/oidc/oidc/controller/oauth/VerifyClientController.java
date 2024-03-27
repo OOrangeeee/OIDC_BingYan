@@ -3,6 +3,7 @@ package com.oidc.oidc.controller.oauth;
 import com.oidc.oidc.service.interfaces.oauth.VerifyClientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,14 +21,14 @@ public class VerifyClientController {
         this.verifyClientService = verifyClientService;
     }
 
-    @PostMapping("/oauth/verify_client")
+    @PostMapping("/oauth/verify_client/")
     public ResponseEntity<?> verifyClient(@RequestParam Map<String, String> mapParams) {
         String clientName = mapParams.get("clientName");
         String clientPassword = mapParams.get("clientPassword");
         String clientRedirectionUrl = mapParams.get("clientRedirectionUrl");
-        return verifyClientService.verifyClient(clientName, clientPassword, clientRedirectionUrl);
+        String state = mapParams.get("state");
+        return verifyClientService.verifyClient(clientName, clientPassword, clientRedirectionUrl, state);
     }
-
 
 
 }

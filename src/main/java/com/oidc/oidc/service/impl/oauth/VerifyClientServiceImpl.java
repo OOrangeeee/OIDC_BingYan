@@ -30,7 +30,7 @@ public class VerifyClientServiceImpl implements VerifyClientService {
     }
 
     @Override
-    public ResponseEntity<?> verifyClient(String clientName, String clientPassword, String clientRedirectionUrl) {
+    public ResponseEntity<?> verifyClient(String clientName, String clientPassword, String clientRedirectionUrl, String state) {
         Map<String, Object> responseBody = new HashMap<>();
         QueryWrapper<Client> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("client_name", clientName);
@@ -60,13 +60,14 @@ public class VerifyClientServiceImpl implements VerifyClientService {
             responseBody.put("error_message", "客户端重定向地址错误");
             return ResponseEntity.badRequest().body(responseBody);
         }
-        if(!client.isClientIsActive())
-        {
+        if (!client.isClientIsActive()) {
             responseBody.put("error_message", "客户端未激活");
             return ResponseEntity.badRequest().body(responseBody);
         }
-
+        client.setClientState(state);
+        clientMapper.updateById(client);
         responseBody.put("error_message", "客户端验证通过");
+        responseBody.put("clientName", client.getClientName());
         return ResponseEntity.ok(responseBody);
 
     }

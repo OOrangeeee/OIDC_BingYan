@@ -28,6 +28,9 @@ public class Client {
     @TableField("client_last_email_sent_time")
     private Date clientLastEmailSentTime;
 
+    @TableField("client_state")
+    private String clientState;
+
     // 无参构造函数
     public Client() {
     }
@@ -107,6 +110,14 @@ public class Client {
 
     public void setClientLastEmailSentTime(Date clientLastEmailSentTime) {
         this.clientLastEmailSentTime = clientLastEmailSentTime;
+    }
+
+    public String getClientState() {
+        return clientState;
+    }
+
+    public void setClientState(String clientState) {
+        this.clientState = clientState;
     }
 
     // equals方法
