@@ -6,5 +6,5 @@ import org.springframework.http.ResponseEntity;
  * @author 晋晨曦
  */
 public interface TokenByCodeService {
-    ResponseEntity<?> generateTokens(String code);
+    ResponseEntity<?> generateTokens(String code,String state);
 }

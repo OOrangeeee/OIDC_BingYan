@@ -24,14 +24,14 @@ public class TokenByCodeServiceImpl implements TokenByCodeService {
     }
 
     @Override
-    public ResponseEntity<?> generateTokens(String code) {
+    public ResponseEntity<?> generateTokens(String code, String state) {
         Map<String, Object> responseBody = new HashMap<>();
         QueryWrapper<AuthorizationCode> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("code_word", code);
 
         AuthorizationCode authorizationCode = authorizationCodeMapper.selectOne(queryWrapper);
         if (authorizationCode == null) {
-            responseBody.put("error_meeage", "授权码错误");
+            responseBody.put("error_message", "授权码错误");
             return ResponseEntity.badRequest().body(responseBody);
         }
 
@@ -49,6 +49,7 @@ public class TokenByCodeServiceImpl implements TokenByCodeService {
 
         responseBody.put("accessToken", accessToken);
         responseBody.put("refreshToken", refreshToken);
+        responseBody.put("state", state);
 
         authorizationCodeMapper.delete(queryWrapper);
 

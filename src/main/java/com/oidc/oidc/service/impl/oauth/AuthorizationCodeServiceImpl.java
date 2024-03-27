@@ -2,8 +2,10 @@ package com.oidc.oidc.service.impl.oauth;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oidc.oidc.mapper.AuthorizationCodeMapper;
+import com.oidc.oidc.mapper.ClientMapper;
 import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.AuthorizationCode;
+import com.oidc.oidc.pojo.Client;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.interfaces.oauth.AuthorizationCodeService;
 import org.slf4j.Logger;
@@ -32,10 +34,13 @@ public class AuthorizationCodeServiceImpl implements AuthorizationCodeService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public AuthorizationCodeServiceImpl(AuthorizationCodeMapper authorizationCodeMapper, UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    private final ClientMapper clientMapper;
+
+    public AuthorizationCodeServiceImpl(AuthorizationCodeMapper authorizationCodeMapper, UserMapper userMapper, PasswordEncoder passwordEncoder, ClientMapper clientMapper) {
         this.authorizationCodeMapper = authorizationCodeMapper;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.clientMapper = clientMapper;
     }
 
     @Override
@@ -47,7 +52,11 @@ public class AuthorizationCodeServiceImpl implements AuthorizationCodeService {
         Boolean ifIntroduction = "true".equals(map.get("userIntroduction"));
         String userName = map.get("userName");
         String userPassword = map.get("userPassword");
-        String state = map.get("state");
+        String clientName = map.get("clientName");
+        QueryWrapper<Client> queryWrapperClient = new QueryWrapper<>();
+        queryWrapperClient.eq("client_name", clientName);
+        Client client = clientMapper.selectOne(queryWrapperClient);
+        String state = client.getClientState();
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", userName);

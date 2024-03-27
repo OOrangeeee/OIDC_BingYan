@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user/account/confirm",
                         "/client/register/",
                         "/client/confirm",
-                        "/oauth/verify_client",
+                        "/oauth/verify_client/",
                         "/oauth/getAuthorizationCode",
                         "/oauth/getTokenByCode/",
                         "/oauth/getInfoByToken/").permitAll()

@@ -3,9 +3,7 @@ package com.oidc.oidc.controller.oauth;
 import com.oidc.oidc.service.interfaces.oauth.TokenByCodeService;
 import com.oidc.oidc.service.interfaces.oauth.VerifyClientService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,13 +22,14 @@ public class TokenByCodeController {
         this.verifyClientService = verifyClientService;
     }
 
-    @GetMapping("/oauth/getTokenByCode/")
+    @PostMapping("/oauth/getTokenByCode/")
     public ResponseEntity<?> getTokenByCode(@RequestParam Map<String, String> mapParams) {
         String clientName = mapParams.get("clientName");
         String clientPassword = mapParams.get("clientPassword");
         String clientRedirectionUrl = mapParams.get("clientRedirectionUrl");
+        String state = mapParams.get("state");
         @SuppressWarnings("unchecked")
-        Map<String, String> clientInfo = (Map<String, String>) verifyClientService.verifyClient(clientName, clientPassword, clientRedirectionUrl).getBody();
+        Map<String, String> clientInfo = (Map<String, String>) verifyClientService.verifyClient(clientName, clientPassword, clientRedirectionUrl, state).getBody();
         if (clientInfo != null && !"客户端验证通过".equals(clientInfo.get("error_message"))) {
             Map<String, String> responseBody = new HashMap<>();
 
@@ -38,6 +37,6 @@ public class TokenByCodeController {
             return ResponseEntity.badRequest().body(responseBody);
         }
         String authorizationCode = mapParams.get("authorizationCode");
-        return tokenByCodeService.generateTokens(authorizationCode);
+        return tokenByCodeService.generateTokens(authorizationCode, state);
     }
 }

@@ -1,6 +1,8 @@
 package com.oidc.oidc.controller.oauth;
 
+import com.oidc.oidc.service.interfaces.oauth.GetIDTokenByTokenService;
 import com.oidc.oidc.service.interfaces.oauth.GetInfoByTokenService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +19,26 @@ import java.util.Map;
 public class GetInfoByTokenController {
 
     private final GetInfoByTokenService getInfoByTokenService;
+    private final GetIDTokenByTokenService getIDTokenByTokenService;
 
-    public GetInfoByTokenController(GetInfoByTokenService getInfoByTokenService) {
+    public GetInfoByTokenController(GetInfoByTokenService getInfoByTokenService, GetIDTokenByTokenService getIdTokenByTokenService) {
         this.getInfoByTokenService = getInfoByTokenService;
+        this.getIDTokenByTokenService = getIdTokenByTokenService;
     }
 
     @GetMapping("/oauth/getInfoByToken/")
     public ResponseEntity<?> getInfoByToken(HttpServletRequest request) throws Exception {
         String authorizationAccess = request.getHeader("AuthorizationAccess");
         String authorizationRefresh = request.getHeader("AuthorizationRefresh");
+        String scpoeIfOpenId = request.getHeader("scpoeIfOpenId");
+        if (scpoeIfOpenId == null) {
+            return getInfoByTokenService.getInfoByToken(authorizationAccess, authorizationRefresh);
+        } else if ("openid".equals(scpoeIfOpenId)) {
+            return getIDTokenByTokenService.getIdTokenByToken(authorizationAccess, authorizationRefresh);
+        } else {
+            return new ResponseEntity<>("scpoeIfOpenId参数错误", HttpStatus.BAD_REQUEST);
+        }
 
-        return getInfoByTokenService.getInfoByToken(authorizationAccess, authorizationRefresh);
+
     }
 }
