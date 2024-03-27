@@ -4,33 +4,32 @@
     "authorization_endpoint": "http://localhost:714/oauth/getAuthorizationCode",
     "token_endpoint": "http://localhost:714/oauth/getTokenByCode/",
     "userinfo_endpoint": "http://localhost:714/oauth/getInfoByToken/",
-    "jwks_uri": "https://example.com/.well-known/jwks.json",
     "response_types_supported": [
-      "code",
-      "token",
-      "id_token",
-      "code id_token",
-      "code token",
-      "id_token token",
-      "code id_token token"
+      "code"
     ],
     "subject_types_supported": [
       "public"
     ],
     "id_token_signing_alg_values_supported": [
-      "RS256"
+      "HMAC SHA-256"
     ],
     "scopes_supported": [
       "openid",
       "email",
-      "profile"
+      "nickname",
+      "avatar",
+      "introduction"
     ],
     "claims_supported": [
-      "aud",
-      "exp",
-      "iat",
-      "iss",
-      "sub"
+        "userIntroduction",
+        "userAvatar",
+        "userNickname",
+        "userEmail",
+        "jti",
+        "exp",
+        "iat",
+        "iss",
+        "sub"
     ]
   }
   
