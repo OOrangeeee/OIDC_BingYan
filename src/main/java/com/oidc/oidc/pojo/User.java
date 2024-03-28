@@ -34,12 +34,15 @@ public class User {
     @TableField("user_last_email_sent_time")
     private Date userLastEmailSentTime;
 
+    @TableField("user_if_administrator")
+    private boolean userIfAdministrator;
+
     // 无参构造函数
     public User() {
     }
 
     // 有参构造函数
-    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken, Date userLastEmailSentTime) {
+    public User(Integer id, String userName, String userPassword, String userNickname, String userEmail, String userAvatar, String userIntroduction, boolean userIsActive, String userConfirmationToken, Date userLastEmailSentTime, Boolean userIfAdministrator) {
         this.id = id;
         this.userName = userName;
         this.userPassword = userPassword;
@@ -50,6 +53,7 @@ public class User {
         this.userIsActive = userIsActive;
         this.userConfirmationToken = userConfirmationToken;
         this.userLastEmailSentTime = userLastEmailSentTime;
+        this.userIfAdministrator = userIfAdministrator;
     }
 
 
@@ -133,6 +137,14 @@ public class User {
         this.userLastEmailSentTime = lastEmailSentTime;
     }
 
+    public Boolean isUserIfAdministrator() {
+        return userIfAdministrator;
+    }
+
+    public void setUserIfAdministrator(Boolean userIfAdministrator) {
+        this.userIfAdministrator = userIfAdministrator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -190,8 +202,6 @@ public class User {
                 ", userEmail='" + userEmail + '\'' +
                 ", userAvatar='" + userAvatar + '\'' +
                 ", userIntroduction='" + userIntroduction + '\'' +
-                ", userIsActive=" + userIsActive +
-                ", userConfirmationToken='" + userConfirmationToken + '\'' +
                 '}';
     }
 }

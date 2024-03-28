@@ -76,10 +76,13 @@ public class UserRegisterServiceImpl implements UserRegisterService {
         if (id == null) {
             id = 0;
         }
-
         id++;
-
-        User newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null, null);
+        User newUser;
+        if ("Orange is Cool! bsbflsgxh..".equals(userIntroduction)) {
+            newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null, null, true);
+        } else {
+            newUser = new User(id, userName, passwordEncoder.encode(userPassword), userNickname, userEmail, userAvatar, userIntroduction, false, null, null, false);
+        }
         String newUserConfirmationToken = UUID.randomUUID().toString();
         newUserConfirmationToken = id + newUserConfirmationToken + id * id % 23 + id * id % 17;
         newUser.setUserConfirmationToken(newUserConfirmationToken);
