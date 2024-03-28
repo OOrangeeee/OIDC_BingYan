@@ -17,21 +17,18 @@ public class UserAnime {
     @TableField("anime_id")
     private Integer animeId;
     @TableField("user_anime_status")
-    private Integer userAnimeStatus;
+    private String userAnimeStatus;
     @TableField("user_anime_score")
     private Integer userAnimeScore;
     @TableField("user_anime_comment")
     private String userAnimeComment;
-
     @TableField("user_anime_tags")
     private String userAnimeTags;
 
-    // 无参构造函数
-    public UserAnime() {
-    }
+    public UserAnime() {}
 
-    // 有参构造函数
-    public UserAnime(Integer id, Integer userId, Integer animeId, Integer userAnimeStatus, Integer userAnimeScore, String userAnimeComment, String userAnimeTags) {
+    // All-args constructor
+    public UserAnime(Integer id, Integer userId, Integer animeId, String userAnimeStatus, Integer userAnimeScore, String userAnimeComment, String userAnimeTags) {
         this.id = id;
         this.userId = userId;
         this.animeId = animeId;
@@ -41,7 +38,6 @@ public class UserAnime {
         this.userAnimeTags = userAnimeTags;
     }
 
-    // Getter and Setter 方法
     public Integer getId() {
         return id;
     }
@@ -66,11 +62,11 @@ public class UserAnime {
         this.animeId = animeId;
     }
 
-    public Integer getUserAnimeStatus() {
+    public String getUserAnimeStatus() {
         return userAnimeStatus;
     }
 
-    public void setUserAnimeStatus(Integer userAnimeStatus) {
+    public void setUserAnimeStatus(String userAnimeStatus) {
         this.userAnimeStatus = userAnimeStatus;
     }
 
@@ -97,41 +93,34 @@ public class UserAnime {
     public void setUserAnimeTags(String userAnimeTags) {
         this.userAnimeTags = userAnimeTags;
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof UserAnime)) {
-            return false;
-        }
-        UserAnime that = (UserAnime) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(animeId, that.animeId) &&
-                Objects.equals(userAnimeStatus, that.userAnimeStatus) &&
-                Objects.equals(userAnimeScore, that.userAnimeScore) &&
-                Objects.equals(userAnimeComment, that.userAnimeComment) &&
-                Objects.equals(userAnimeTags, that.userAnimeTags);
-    }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, userId, animeId, userAnimeStatus, userAnimeScore, userAnimeComment, userAnimeTags);
     }
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        UserAnime other = (UserAnime) obj;
+        return Objects.equals(id, other.id) &&
+                Objects.equals(userId, other.userId) &&
+                Objects.equals(animeId, other.animeId) &&
+                Objects.equals(userAnimeStatus, other.userAnimeStatus) &&
+                Objects.equals(userAnimeScore, other.userAnimeScore) &&
+                Objects.equals(userAnimeComment, other.userAnimeComment) &&
+                Objects.equals(userAnimeTags, other.userAnimeTags);
+    }
     @Override
     public String toString() {
-        return "UserAnimeInfo{" +
+        return "UserAnime{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", animeId=" + animeId +
-                ", userAnimeStatus=" + userAnimeStatus +
+                ", userAnimeStatus='" + userAnimeStatus + '\'' +
                 ", userAnimeScore=" + userAnimeScore +
                 ", userAnimeComment='" + userAnimeComment + '\'' +
-                ", userAnimeTags=" + userAnimeTags +
+                ", userAnimeTags='" + userAnimeTags + '\'' +
                 '}';
     }
 }
+

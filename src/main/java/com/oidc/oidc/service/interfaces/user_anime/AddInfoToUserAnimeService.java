@@ -7,6 +7,6 @@ import java.util.Map;
 /**
  * @author 晋晨曦
  */
-public interface AddInfoToUserAnimeImpl {
+public interface AddInfoToUserAnimeService {
     ResponseEntity<?> addInfoToUserAnime(Map<String, String> mapParams);
 }
