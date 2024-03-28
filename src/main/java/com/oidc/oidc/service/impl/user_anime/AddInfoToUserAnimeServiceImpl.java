@@ -78,6 +78,10 @@ public class AddInfoToUserAnimeServiceImpl implements AddInfoToUserAnimeService 
             logger.error("分数不合法");
             return ResponseEntity.badRequest().body(responseBody);
         }
+        UserAnime userAnime = userAnimeMapper.selectOne(new QueryWrapper<UserAnime>().eq("user_id", userId).eq("anime_id", animeId));
+        if (userAnime != null) {
+            userAnimeMapper.deleteById(userAnime.getId());
+        }
         Integer id = userAnimeMapper.findMaxId();
         if (id == null) {
             id = 0;
