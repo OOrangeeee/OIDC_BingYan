@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * @author 晋晨曦
  */
-@TableName("user_anime_status")
+@TableName("user_anime_status_info")
 public class UserAnimeStatus {
     @TableField("id")
     private Integer id;

@@ -10,6 +10,6 @@ import org.apache.ibatis.annotations.Select;
  */
 @Mapper
 public interface UserAnimeStatusMapper extends BaseMapper<UserAnimeStatus> {
-    @Select("SELECT MAX(id) FROM user_anime_comment")
+    @Select("SELECT MAX(id) FROM user_anime_status_info")
     Integer findMaxId();
 }

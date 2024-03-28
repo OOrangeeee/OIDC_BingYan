@@ -3,7 +3,6 @@ package com.oidc.oidc.service.impl.anime.info;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.oidc.oidc.mapper.AnimeMapper;
 import com.oidc.oidc.mapper.UserAnimeMapper;
-import com.oidc.oidc.mapper.UserMapper;
 import com.oidc.oidc.pojo.Anime;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.pojo.UserAnime;
