@@ -113,7 +113,11 @@ public class UserRegisterServiceImpl implements UserRegisterService {
             logger.error("无效的用户确认令牌");
             return ResponseEntity.badRequest().body(responseBody);
         }
-
+        if (user.isUserIsActive()) {
+            responseBody.put("error_message", "账户已激活");
+            logger.info("账户已激活");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
         user.setUserIsActive(true);
         userMapper.updateById(user);
         responseBody.put("message", "账户激活成功");
