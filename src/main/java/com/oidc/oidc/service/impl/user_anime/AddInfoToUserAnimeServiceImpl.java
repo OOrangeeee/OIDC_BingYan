@@ -43,14 +43,14 @@ public class AddInfoToUserAnimeServiceImpl implements AddInfoToUserAnimeService 
         UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
-        Integer animeId = Integer.parseInt(mapParams.get("animeId"));
         Integer userId = user.getId();
         String userAnimeStatus = mapParams.get("userAnimeStatus");
-        Integer userAnimeScore = Integer.parseInt(mapParams.get("userAnimeScore"));
+        Integer animeId = tryParse(mapParams.get("animeId"));
+        Integer userAnimeScore = tryParse(mapParams.get("userAnimeScore"));
         String userAnimeComment = mapParams.get("userAnimeComment");
         String userAnimeTags = mapParams.get("userAnimeTags");
         if (animeId == null || userId == null || userAnimeStatus == null) {
-            responseBody.put("error_message", "追番必要参数不足");
+            responseBody.put("error_message", "追番必要参数错误");
             return ResponseEntity.badRequest().body(responseBody);
         }
         QueryWrapper<UserAnimeStatus> userAnimeStatusQueryWrapper = new QueryWrapper<>();
@@ -73,7 +73,7 @@ public class AddInfoToUserAnimeServiceImpl implements AddInfoToUserAnimeService 
                 return ResponseEntity.badRequest().body(responseBody);
             }
         }
-        if (userAnimeScore > 10 || userAnimeScore < 0) {
+        if (userAnimeScore != null && (userAnimeScore > 10 || userAnimeScore < 0)) {
             responseBody.put("error_message", "分数不合法");
             logger.error("分数不合法");
             return ResponseEntity.badRequest().body(responseBody);
@@ -91,5 +91,13 @@ public class AddInfoToUserAnimeServiceImpl implements AddInfoToUserAnimeService 
         userAnimeMapper.insert(newUserAnime);
         responseBody.put("error_message", "追番成功");
         return ResponseEntity.ok(responseBody);
+    }
+
+    private Integer tryParse(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }

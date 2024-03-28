@@ -6,6 +6,7 @@ import com.oidc.oidc.service.interfaces.anime.search.SearchAnimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,23 +25,28 @@ public class SearchAnimeServiceImpl implements SearchAnimeService {
 
     @Override
     public ResponseEntity<?> searchAnimeByName(String name) {
-        List<Anime> foundAnimes = animeMapper.findByAnimeNameLike(name);
         Map<String, Object> responseBody = new HashMap<>();
+        if (name == null || name.trim().isEmpty()) {
+            responseBody.put("error_message", "搜索关键词不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
+        // 使用占位符来防止直接插入
+        List<Anime> foundAnimes = animeMapper.findByAnimeNameLike("%" + name + "%");
         if (foundAnimes.isEmpty()) {
             responseBody.put("error_message", "未找到相关动漫");
             return ResponseEntity.badRequest().body(responseBody);
         }
-        int count = 1;
+
+        List<Map<String, Object>> animeList = new ArrayList<>();
         for (Anime anime : foundAnimes) {
-            Map<Integer, String> animeMap = new HashMap<>();
-
-            animeMap.put(anime.getId(), anime.getAnimeName());
-
-            responseBody.put(Integer.toString(count), animeMap);
-
-            count++;
+            Map<String, Object> animeInfo = new HashMap<>();
+            animeInfo.put("id", anime.getId());
+            animeInfo.put("name", anime.getAnimeName());
+            animeList.add(animeInfo);
         }
-        responseBody.put("error_message", "查询成功");
+        responseBody.put("animes", animeList);
+        responseBody.put("message", "查询成功");
         return ResponseEntity.ok(responseBody);
     }
+
 }
