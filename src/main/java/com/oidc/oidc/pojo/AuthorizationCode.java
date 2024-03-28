@@ -12,7 +12,7 @@ import java.util.Objects;
 public class AuthorizationCode {
 
     @TableField("id")
-    private int id;
+    private Integer id;
 
     @TableField("code_word")
     private String codeWord;
