@@ -4,7 +4,10 @@ import com.oidc.oidc.mapper.AnimeMapper;
 import com.oidc.oidc.pojo.Anime;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
+import com.oidc.oidc.service.impl.user.account.UserRegisterServiceImpl;
 import com.oidc.oidc.service.interfaces.anime.add.AnimeAddService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +25,7 @@ public class AnimeAddServiceImpl implements AnimeAddService {
 
     private final AnimeMapper animeMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
 
     public AnimeAddServiceImpl(AnimeMapper animeMapper) {
 
@@ -36,6 +40,7 @@ public class AnimeAddServiceImpl implements AnimeAddService {
         User user = loginUser.getUser();
         if (!user.isUserIfAdministrator()) {
             responseBody.put("error_message", "无管理员权限");
+            logger.error("无管理员权限");
             return ResponseEntity.badRequest().body(responseBody);
         }
         String animeName = mapParams.get("animeName");
@@ -43,6 +48,11 @@ public class AnimeAddServiceImpl implements AnimeAddService {
         String animeDirector = mapParams.get("animeDirector");
         String animeIntroduction = mapParams.get("animeIntroduction");
         String animeUrl = mapParams.get("animeUrl");
+        if (animeName == null || animeNums == 0 || animeDirector == null || animeIntroduction == null || animeUrl == null) {
+            logger.error("参数不能为空");
+            responseBody.put("error_message", "参数不能为空");
+            return ResponseEntity.badRequest().body(responseBody);
+        }
         Integer id = animeMapper.findMaxId();
         if (id == null) {
             id = 0;
