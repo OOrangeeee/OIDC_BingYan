@@ -2,6 +2,7 @@ package com.oidc.oidc.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Objects;
 
 /**
@@ -22,18 +23,22 @@ public class UserAnime {
     @TableField("user_anime_comment")
     private String userAnimeComment;
 
+    @TableField("user_anime_tags")
+    private String userAnimeTags;
+
     // 无参构造函数
     public UserAnime() {
     }
 
     // 有参构造函数
-    public UserAnime(Integer id, Integer userId, Integer animeId, Integer userAnimeStatus, Integer userAnimeScore, String userAnimeComment) {
+    public UserAnime(Integer id, Integer userId, Integer animeId, Integer userAnimeStatus, Integer userAnimeScore, String userAnimeComment, String userAnimeTags) {
         this.id = id;
         this.userId = userId;
         this.animeId = animeId;
         this.userAnimeStatus = userAnimeStatus;
         this.userAnimeScore = userAnimeScore;
         this.userAnimeComment = userAnimeComment;
+        this.userAnimeTags = userAnimeTags;
     }
 
     // Getter and Setter 方法
@@ -85,6 +90,15 @@ public class UserAnime {
         this.userAnimeComment = userAnimeComment;
     }
 
+    public String getUserAnimeTags() {
+        return userAnimeTags;
+    }
+
+    public void setUserAnimeTags(String userAnimeTags) {
+        this.userAnimeTags = userAnimeTags;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -99,12 +113,13 @@ public class UserAnime {
                 Objects.equals(animeId, that.animeId) &&
                 Objects.equals(userAnimeStatus, that.userAnimeStatus) &&
                 Objects.equals(userAnimeScore, that.userAnimeScore) &&
-                Objects.equals(userAnimeComment, that.userAnimeComment);
+                Objects.equals(userAnimeComment, that.userAnimeComment) &&
+                Objects.equals(userAnimeTags, that.userAnimeTags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, animeId, userAnimeStatus, userAnimeScore, userAnimeComment);
+        return Objects.hash(id, userId, animeId, userAnimeStatus, userAnimeScore, userAnimeComment, userAnimeTags);
     }
 
     @Override
@@ -116,6 +131,7 @@ public class UserAnime {
                 ", userAnimeStatus=" + userAnimeStatus +
                 ", userAnimeScore=" + userAnimeScore +
                 ", userAnimeComment='" + userAnimeComment + '\'' +
+                ", userAnimeTags=" + userAnimeTags +
                 '}';
     }
 }
