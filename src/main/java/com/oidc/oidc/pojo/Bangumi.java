@@ -11,21 +11,27 @@ import java.util.Objects;
 @TableName("bangumi")
 public class Bangumi {
     @TableField("id")
-    public Integer id;
+    private Integer id;
     @TableField("access_token")
-    public String accessToken;
+    private String accessToken;
     @TableField("refresh_token")
-    public String refreshToken;
+    private String refreshToken;
+    @TableField("bangumi_user_id")
+    private Integer bangumiUserId;
 
+    // 无参构造方法
     public Bangumi() {
     }
 
-    public Bangumi(Integer id, String accessToken, String refreshToken) {
+    // 全参构造方法
+    public Bangumi(Integer id, String accessToken, String refreshToken, Integer bangumiUserId) {
         this.id = id;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+        this.bangumiUserId = bangumiUserId;
     }
 
+    // Getter方法
     public Integer getId() {
         return id;
     }
@@ -36,6 +42,10 @@ public class Bangumi {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public Integer getBangumiUserId() {
+        return bangumiUserId;
     }
 
     public void setId(Integer id) {
@@ -50,6 +60,10 @@ public class Bangumi {
         this.refreshToken = refreshToken;
     }
 
+    public void setBangumiUserId(Integer bangumiUserId) {
+        this.bangumiUserId = bangumiUserId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -61,12 +75,13 @@ public class Bangumi {
         Bangumi bangumi = (Bangumi) o;
         return Objects.equals(id, bangumi.id) &&
                 Objects.equals(accessToken, bangumi.accessToken) &&
-                Objects.equals(refreshToken, bangumi.refreshToken);
+                Objects.equals(refreshToken, bangumi.refreshToken) &&
+                Objects.equals(bangumiUserId, bangumi.bangumiUserId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accessToken, refreshToken);
+        return Objects.hash(id, accessToken, refreshToken, bangumiUserId);
     }
 
     @Override
@@ -75,6 +90,7 @@ public class Bangumi {
                 "id=" + id +
                 ", accessToken='" + accessToken + '\'' +
                 ", refreshToken='" + refreshToken + '\'' +
+                ", bangumiUserId=" + bangumiUserId +
                 '}';
     }
 }

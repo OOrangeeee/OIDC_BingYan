@@ -72,14 +72,19 @@ public class GetTokenServiceImpl implements GetTokenService {
         logger.info("Received response: {}", response.getBody());
         String accessToken = (String) response.getBody().get("access_token");
         String refreshToken = (String) response.getBody().get("refresh_token");
+        Integer userId = Integer.parseInt(response.getBody().get("user_id").toString());
+        QueryWrapper<Bangumi> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("bangumi_user_id", userId);
+        bangumiMapper.delete(queryWrapper1);
         Integer id = bangumiMapper.findMaxId();
         if (id == null) {
             id = 0;
         }
         id++;
-        Bangumi newBangumi = new Bangumi(id, accessToken, refreshToken);
+        Bangumi newBangumi = new Bangumi(id, accessToken, refreshToken, userId);
         bangumiMapper.insert(newBangumi);
         responseBody.put("error_message", "获得令牌成功");
+        responseBody.put("user_id", response.getBody().get("user_id"));
         return ResponseEntity.ok(responseBody);
     }
 }
