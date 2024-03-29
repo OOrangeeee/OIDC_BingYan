@@ -18,4 +18,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select("SELECT * FROM user_info WHERE user_name LIKE CONCAT('%', #{userName}, '%')")
     List<User> findByUserNameLike(String userName);
+
+    @Select("SELECT * FROM user_info WHERE user_nickname LIKE CONCAT('%', #{userNickname}, '%')")
+    List<User> findByUserNicknameLike(String userNickname);
 }
