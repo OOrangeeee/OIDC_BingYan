@@ -18,9 +18,4 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select("SELECT * FROM user_info WHERE user_name LIKE CONCAT('%', #{userName}, '%')")
     List<User> findByUserNameLike(String userName);
-
-    //调用mybatis-plus的接口实现mapper，避免使用sql语句出错。
-    //如果需要使用sql语句，可以重写该方法。
-    //后续有时间再来更改。
-    //TODO:重写UserMapper
 }
