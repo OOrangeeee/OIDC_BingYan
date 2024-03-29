@@ -56,7 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/oauth/verify_client/",
                         "/oauth/getAuthorizationCode",
                         "/oauth/getTokenByCode/",
-                        "/oauth/getInfoByToken/").permitAll()
+                        "/oauth/getInfoByToken/",
+                        "/bangumi/authorize/",
+                        "/bangumi/getToken/").permitAll()
                 // 允许跨域预检请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyRequest().authenticated()
