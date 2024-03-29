@@ -29,7 +29,7 @@ public class AddInfoToUserAnimeServiceImpl implements AddInfoToUserAnimeService 
     private final UserAnimeMapper userAnimeMapper;
     private final UserAnimeStatusMapper userAnimeStatusMapper;
     private final AnimeTagMapper animeTagMapper;
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddInfoToUserAnimeServiceImpl.class);
 
     public AddInfoToUserAnimeServiceImpl(UserAnimeMapper userAnimeMapper, UserAnimeStatusMapper userAnimeStatusMapper, AnimeTagMapper animeTagMapper) {
         this.animeTagMapper = animeTagMapper;

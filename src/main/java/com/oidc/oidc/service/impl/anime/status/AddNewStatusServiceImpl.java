@@ -22,7 +22,7 @@ import java.util.Map;
 @Service
 public class AddNewStatusServiceImpl implements AddNewStatusService {
     private final UserAnimeStatusMapper userAnimeStatusMapper;
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddNewStatusServiceImpl.class);
 
 
     public AddNewStatusServiceImpl(UserAnimeStatusMapper userAnimeStatusMapper) {

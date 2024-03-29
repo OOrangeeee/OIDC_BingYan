@@ -1,6 +1,7 @@
 package com.oidc.oidc.service.impl.user.account;
 
 import com.oidc.oidc.mapper.UserMapper;
+import com.oidc.oidc.model.UserInfoModel;
 import com.oidc.oidc.pojo.User;
 import com.oidc.oidc.service.impl.client.ClientRegisterServiceImpl;
 import com.oidc.oidc.service.impl.tools.UserDetailImpl;
@@ -43,12 +44,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             UserDetailImpl loginUser = (UserDetailImpl) authenticationToken.getPrincipal();
             User user = loginUser.getUser();
             responseBody.put("error_message", "读取信息成功");
-            responseBody.put("id", user.getId());
-            responseBody.put("userName", user.getUserName());
-            responseBody.put("userNickname", user.getUserNickname());
-            responseBody.put("userEmail", user.getUserEmail());
-            responseBody.put("userAvatar", user.getUserAvatar());
-            responseBody.put("userIntroduction", user.getUserIntroduction());
+            UserInfoModel userInfoModel = new UserInfoModel(user.getId(), user.getUserName(), user.getUserNickname(), user.getUserEmail(), user.getUserAvatar(),
+                    user.getUserIntroduction(), user.isUserIfAdministrator());
+            responseBody.put("user_info", userInfoModel);
             return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
             responseBody.clear();

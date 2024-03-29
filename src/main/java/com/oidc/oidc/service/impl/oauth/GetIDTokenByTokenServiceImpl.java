@@ -25,7 +25,7 @@ public class GetIDTokenByTokenServiceImpl implements GetIDTokenByTokenService {
 
     private final UserMapper userMapper;
 
-    private static final Logger logger = LoggerFactory.getLogger(VerifyClientServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetIDTokenByTokenServiceImpl.class);
 
 
     public GetIDTokenByTokenServiceImpl(GetTokenByTokenService getTokenByTokenService, UserMapper userMapper) {

@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Service
 public class IfAlreadyFollowServiceImpl implements IfAlreadyFollowService {
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(IfAlreadyFollowServiceImpl.class);
     private final UserMapper userMapper;
     private final AnimeMapper animeMapper;
     private final UserAnimeMapper userAnimeMapper;
