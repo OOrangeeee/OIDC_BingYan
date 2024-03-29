@@ -23,7 +23,7 @@ import java.util.Map;
 @Service
 public class GetFollowedAnimesByIdServiceImpl implements GetFollowedAnimesByIdService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetFollowedAnimesByIdServiceImpl.class);
     private final UserMapper userMapper;
     private final UserAnimeMapper userAnimeMapper;
 

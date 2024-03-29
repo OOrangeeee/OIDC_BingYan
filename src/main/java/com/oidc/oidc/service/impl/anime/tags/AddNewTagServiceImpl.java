@@ -23,7 +23,7 @@ import java.util.Map;
 public class AddNewTagServiceImpl implements AddNewTagService {
 
     private final AnimeTagMapper animeTagMapper;
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddNewTagServiceImpl.class);
 
     public AddNewTagServiceImpl(AnimeTagMapper animeTagMapper) {
 

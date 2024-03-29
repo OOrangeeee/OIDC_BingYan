@@ -25,7 +25,7 @@ public class AnimeAddServiceImpl implements AnimeAddService {
 
     private final AnimeMapper animeMapper;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AnimeAddServiceImpl.class);
 
     public AnimeAddServiceImpl(AnimeMapper animeMapper) {
 

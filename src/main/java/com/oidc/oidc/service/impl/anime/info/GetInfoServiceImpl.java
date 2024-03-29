@@ -26,7 +26,7 @@ import java.util.Map;
 public class GetInfoServiceImpl implements GetInfoService {
     private final AnimeMapper animeMapper;
     private final UserAnimeMapper userAnimeMapper;
-    private static final Logger logger = LoggerFactory.getLogger(UserRegisterServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetInfoServiceImpl.class);
 
     public GetInfoServiceImpl(AnimeMapper animeMapper, UserAnimeMapper userAnimeMapper) {
         this.animeMapper = animeMapper;
