@@ -8,47 +8,11 @@
 
 嗯，我只能说这么多。
 
-## 项目技术栈
+## 项目总结
 
-### 基本环境
+完成了所有阶段的所有任务（包括基础和提升），并加入了一些自己的想法，写了一些自己的新功能。
 
-JDK版本: 1.8
-Java版本：8（版本任你发，我用Java8❤）
-
-### 构建管理
-
-Maven: 作为项目构建工具，用于管理项目的依赖和构建过程。
-
-### 核心框架
-
-Spring Boot: 版本2.6.13。
-
-### 数据库与持久层
-
-Spring Boot Starter JDBC: 提供了基于JDBC的数据库交互功能。
-
-MySQL Connector/J: 版本8.3.0，用于连接MySQL数据库。
-
-MyBatis Plus: 版本3.5.5，提供了对MyBatis的增强支持，简化了CRUD操作。
-
-### 安全性
-
-Spring Boot Starter Security: 提供了基于Spring Security的安全框架，用于实现认证和授权。
-
-JSON Web Tokens (JWT)
-jjwt-api, jjwt-impl, jjwt-jackson: 版本0.12.5，用于生成和解析JWT，以支持无状态认证。
-
-### 邮件服务
-
-Spring Boot Starter Mail: 提供邮件发送功能。
-
-### HTTP客户端
-
-Apache HttpClient 和 HttpMime: 版本4.5.13，用于在Java应用中发送HTTP请求。
-
-### JSON处理
-
-JSON-java: 版本20210307，用于处理JSON格式的数据。
+详情请前往WorkLog.md中查看。那里记载了这个项目的所有功能，代码框架和我的工作流程，心理路程。
 
 ## 项目部署
 
@@ -95,7 +59,3 @@ java -jar target/OIDC-0.0.1-SNAPSHOT.jar
 ### 6. 利用IDEA部署
 
 在IDEA中，从VCS导入项目后，在IDEA中进行数据库配置，配置文件调整等操作，然后运行项目即可（PS，我没试过，大概率遇到莫名其妙的bug，先新建对应Spring boot版本的项目再进行部署或许是个不错的选择）。
-
-## 后记
-
-**关于项目的开发过程和我的详细工作流程请查看根目录下的工作日志.md，虽然是流水账。。**
