@@ -1,0 +1,35 @@
+{
+    "issuer": "Orange",
+    "client_authentication_endpoint": "http://localhost:714/oauth/verify_client/",
+    "authorization_endpoint": "http://localhost:714/oauth/getAuthorizationCode",
+    "token_endpoint": "http://localhost:714/oauth/getTokenByCode/",
+    "userinfo_endpoint": "http://localhost:714/oauth/getInfoByToken/",
+    "response_types_supported": [
+      "code"
+    ],
+    "subject_types_supported": [
+      "public"
+    ],
+    "id_token_signing_alg_values_supported": [
+      "HMAC SHA-256"
+    ],
+    "scopes_supported": [
+      "openid",
+      "email",
+      "nickname",
+      "avatar",
+      "introduction"
+    ],
+    "claims_supported": [
+        "userIntroduction",
+        "userAvatar",
+        "userNickname",
+        "userEmail",
+        "jti",
+        "exp",
+        "iat",
+        "iss",
+        "sub"
+    ]
+  }
+  
